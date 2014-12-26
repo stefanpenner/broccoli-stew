@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/stefanpenner/broccoli-stew/issues"
   },
-  "homepage": "https://github.com/stefanpenner/broccoli-stew"
+  "homepage": "https://github.com/stefanpenner/broccoli-stew",
+  "dependencies": {
+    "broccoli-funnel": "^0.1.6"
+  }
 }
