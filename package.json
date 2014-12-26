@@ -1,0 +1,22 @@
+{
+  "name": "broccoli-stew",
+  "version": "0.0.1",
+  "description": "foundation of any healthy brocfile",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stefanpenner/broccoli-stew.git"
+  },
+  "keywords": [
+    "broccoli"
+  ],
+  "author": "Stefan Penner & Robert Jackson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/stefanpenner/broccoli-stew/issues"
+  },
+  "homepage": "https://github.com/stefanpenner/broccoli-stew"
+}
