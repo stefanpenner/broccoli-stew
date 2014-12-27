@@ -26,6 +26,10 @@
     "minimatch": "^2.0.1"
   },
   "devDependencies": {
-    "mocha": "^2.1.0"
+    "broccoli": "^0.13.3",
+    "chai": "^1.10.0",
+    "mocha": "^2.1.0",
+    "rsvp": "^3.0.16",
+    "walk-sync": "^0.1.3"
   }
 }
