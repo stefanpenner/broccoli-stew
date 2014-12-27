@@ -4,7 +4,8 @@
   "description": "foundation of any healthy brocfile",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha tests/**/*-test.js",
+    "test:watch": "mocha --watch tests/**/*-test.js"
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,11 @@
   },
   "homepage": "https://github.com/stefanpenner/broccoli-stew",
   "dependencies": {
-    "broccoli-funnel": "^0.1.6"
+    "broccoli-funnel": "^0.1.7",
+    "debug": "^2.1.0",
+    "minimatch": "^2.0.1"
+  },
+  "devDependencies": {
+    "mocha": "^2.1.0"
   }
 }
