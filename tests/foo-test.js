@@ -61,7 +61,7 @@ describe('decompose', function() {
   it('file', function(){
     assert.deepEqual(decompose('foo/{bar.html}'), {
       root: 'foo',
-      include: ['{bar.html}'],
+      include: ['bar.html'],
       exclude: []
     });
   });
