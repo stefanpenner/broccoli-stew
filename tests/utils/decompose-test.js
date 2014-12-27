@@ -1,5 +1,5 @@
 var assert = require('assert');
-var decompose = require('../lib/utils/decompose');
+var decompose = require('../../lib/utils/decompose');
 
 describe('decompose', function() {
   it('basic', function(){
