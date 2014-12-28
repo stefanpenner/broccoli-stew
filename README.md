@@ -11,4 +11,5 @@ Currently the following methods are available:
 - `rename`
 - `find`
 - `map`
+- `log`
 

@@ -29,7 +29,6 @@ describe('map', function() {
 
     return builder.build().then(function(inputTree) {
       return walkSync(inputTree.directory)
-        .sort()
         .filter(function(p) { return !/\/$/.test(p); })
         .reduce(function(files, p) {
           files[p] = fs.readFileSync(path.join(inputTree.directory, p)).toString();
