@@ -53,7 +53,8 @@ describe('find', function() {
           'node_modules/mocha/mocha.js',
           'node_modules/mocha/package.json',
           'other/mocha/apple.css',
-          'style.css',
+          'other/mocha/apple.js',
+          'style.css'
         ]);
       });
     });
@@ -79,7 +80,7 @@ describe('find', function() {
         expect(files).to.eql([
           'node_modules/mocha/mocha.css',
           'node_modules/mocha/mocha.js',
-          'node_modules/mocha/package.json',
+          'node_modules/mocha/package.json'
         ]);
       });
     });
@@ -88,7 +89,7 @@ describe('find', function() {
       return find(fixturePath, 'node_modules/mocha/*.{css,js}').then(function(files) {
         expect(files).to.eql([
           'node_modules/mocha/mocha.css',
-          'node_modules/mocha/mocha.js',
+          'node_modules/mocha/mocha.js'
         ]);
       });
     });
@@ -97,16 +98,6 @@ describe('find', function() {
       return find(fixturePath, 'node_modules/mocha/{mocha.css}').then(function(files) {
         expect(files).to.eql([
           'node_modules/mocha/mocha.css'
-        ]);
-      });
-    });
-
-    it('finds subtree via glob', function() {
-      return find(fixturePath, 'node_modules/mocha/**/*').then(function(files) {
-        expect(files).to.eql([
-          'node_modules/mocha/mocha.css',
-          'node_modules/mocha/mocha.js',
-          'node_modules/mocha/package.json',
         ]);
       });
     });

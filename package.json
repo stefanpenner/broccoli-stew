@@ -4,8 +4,8 @@
   "description": "foundation of any healthy brocfile",
   "main": "index.js",
   "scripts": {
-    "test": "mocha tests/**/*-test.js",
-    "test:watch": "mocha --watch tests/**/*-test.js"
+    "test": "mocha tests/*-test.js",
+    "test:watch": "mocha --watch tests/*-test.js"
   },
   "repository": {
     "type": "git",
