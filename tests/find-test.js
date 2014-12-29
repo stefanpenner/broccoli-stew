@@ -44,21 +44,6 @@ describe('find', function() {
   }
 
   describe('rooted at: ' + fixturePath, function() {
-    it('finds whole tree', function() {
-      return find('.').then(function(files) {
-        expect(files).to.eql([
-          'file.txt',
-          'node_modules/foo/foo.css',
-          'node_modules/mocha/mocha.css',
-          'node_modules/mocha/mocha.js',
-          'node_modules/mocha/package.json',
-          'other/mocha/apple.css',
-          'other/mocha/apple.js',
-          'style.css'
-        ]);
-      });
-    });
-
     it('finds sub tree (folder no glob)', function() {
       return find(fixturePath, 'node_modules/mocha/').then(function(files) {
         expect(files).to.eql([
