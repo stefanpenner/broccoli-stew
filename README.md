@@ -10,4 +10,5 @@ Currently the following methods are available:
 - `mv`
 - `rename`
 - `find`
+- `map`
 
