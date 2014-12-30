@@ -23,11 +23,9 @@ describe('mv', function() {
     builders.push(builder);
 
     return builder.build().then(function(inputTree) {
-      return walkSync(inputTree.directory).
-        sort().
-        filter(function(path) {
-          return !/\/$/.test(path);
-      });
+      return walkSync(inputTree.directory)
+        .sort()
+        .filter(function(path) { return !/\/$/.test(path); });
     });
   }
 
@@ -144,7 +142,6 @@ describe('mv', function() {
       });
     });
 
- 
     it('move subgraph with matcher!!', function() {
       return mv(_find('node_modules'), 'node_modules/mocha/', 'toy_modules/').then(function(files) {
         expect(files.sort()).to.eql([
