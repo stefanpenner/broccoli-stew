@@ -2,3 +2,4 @@ node_modules
 !tests/fixtures/node_modules
 tmp
 test/fixtures/tmp/
+npm-debug.log

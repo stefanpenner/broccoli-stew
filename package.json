@@ -23,7 +23,9 @@
   "dependencies": {
     "broccoli-filter": "^0.1.10",
     "broccoli-funnel": "^0.1.7",
+    "chalk": "^0.5.1",
     "debug": "^2.1.0",
+    "lodash-node": "^2.4.1",
     "minimatch": "^2.0.1"
   },
   "devDependencies": {
