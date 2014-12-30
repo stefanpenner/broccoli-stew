@@ -22,12 +22,9 @@ describe('find', function() {
     builders.push(builder);
 
     return builder.build().then(function(inputTree) {
-      return walkSync(inputTree.directory).
-        sort().
-        filter(function(path) {
-          // drop folders
-          return !/\/$/.test(path);
-      });
+      return walkSync(inputTree.directory)
+        .sort()
+        .filter(function(path) { /* drop folders*/ return !/\/$/.test(path); });
     });
   }
 
