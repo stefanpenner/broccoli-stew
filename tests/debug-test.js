@@ -7,7 +7,7 @@ var path     = require('path');
 var Promise  = require('rsvp').Promise;
 var walkSync = require('walk-sync');
 
-describe('debug', function() {
+describe.only('debug', function() {
 
   var fixturePath = path.join(__dirname, 'fixtures');
   var builders = [];
@@ -53,7 +53,7 @@ describe('debug', function() {
       ]);
     });
   });
-  
+
   it('should write files to disk in correct folder', function() {
     return debug(_find('node_modules/mocha'), {name: 'debug'}).then(function(files) {
       var debugDir = path.join(process.cwd(), 'tests/fixtures/DEBUG-debug');
