@@ -12,4 +12,4 @@ Currently the following methods are available:
 - `find`
 - `map`
 - `log`
-
+- `debug`

@@ -3,3 +3,4 @@ node_modules
 tmp
 test/fixtures/tmp/
 npm-debug.log
+DEBUG-*/
