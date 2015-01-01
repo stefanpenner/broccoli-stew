@@ -7,7 +7,7 @@ var path     = require('path');
 var Promise  = require('rsvp').Promise;
 var walkSync = require('walk-sync');
 
-describe.only('debug', function() {
+describe('debug', function() {
 
   var fixturePath = path.join(__dirname, 'fixtures');
   var builders = [];
