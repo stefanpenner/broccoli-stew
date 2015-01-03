@@ -1,43 +1,25 @@
-var broccoli = require('broccoli');
 var _find = require('../lib/find');
 var path = require('path');
-var walkSync = require('walk-sync');
-var Promise = require('rsvp').Promise;
 var chai = require('chai');
 var expect = chai.expect;
+var helpers = require('./helpers');
+var makeTestHelper = helpers.makeTestHelper;
+var cleanupBuilders = helpers.cleanupBuilders;
 
 describe('find', function() {
   var fixturePath = path.join(__dirname, 'fixtures');
-  var builders = [];
 
   afterEach(function() {
-    return Promise.all(builders.map(function(builder) {
-      return builder.cleanup();
-    }));
+    return cleanupBuilders();
   });
 
-  function tree(inputTree) {
-    builder = new broccoli.Builder(inputTree);
-
-    builders.push(builder);
-
-    return builder.build().then(function(inputTree) {
-      return walkSync(inputTree.directory)
-        .filter(function(path) { /* drop folders*/ return !/\/$/.test(path); });
-    });
-  }
-
-  function find() {
-    var cwd = process.cwd();
-    var args = arguments;
-
-    return new Promise(function(resolve) {
-      process.chdir(fixturePath);
-      resolve(tree(_find.apply(undefined, args)))
-    }).finally(function() {
-      process.chdir(cwd);
-    });
-  }
+  var find = makeTestHelper({
+    subject: _find,
+    fixturePath: fixturePath,
+    filter: function (paths) {
+      return paths.filter(function(path) { return !/\/$/.test(path); });
+    }
+  });
 
   describe('rooted at: ' + fixturePath, function() {
     it('finds sub tree (folder no glob)', function() {

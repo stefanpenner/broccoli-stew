@@ -2,7 +2,7 @@ var broccoli = require('broccoli');
 var _find = require('../lib/find');
 var _log = require('../lib/log');
 var Promise  = require('rsvp').Promise;
-var path = require('path')
+var path = require('path');
 var expect = require('chai').expect;
 var walkSync = require('walk-sync');
 
@@ -17,7 +17,7 @@ describe('log', function() {
   });
 
   function tree(inputTree) {
-    builder = new broccoli.Builder(inputTree);
+    var builder = new broccoli.Builder(inputTree);
 
     builders.push(builder);
 
@@ -32,7 +32,7 @@ describe('log', function() {
 
     return new Promise(function(resolve) {
       process.chdir(fixturePath);
-      resolve(tree(_log.apply(undefined, args)))
+      resolve(tree(_log.apply(undefined, args)));
     }).finally(function() {
       process.chdir(cwd);
     });

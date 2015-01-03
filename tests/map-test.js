@@ -1,53 +1,34 @@
-var broccoli = require('broccoli');
 var _map = require('../lib/map');
 var _find = require('../lib/find');
 var path = require('path');
-var walkSync = require('walk-sync');
-var Promise = require('rsvp').Promise;
 var chai = require('chai');
 var expect = chai.expect;
 var fs = require('fs');
+var helpers = require('./helpers');
+var makeTestHelper = helpers.makeTestHelper;
+var cleanupBuilders = helpers.cleanupBuilders;
 
 describe('map', function() {
   var fixturePath = path.join(__dirname, 'fixtures');
-  var builders = [];
 
   afterEach(function() {
-    return Promise.all(builders.map(function(builder) {
-      return builder.cleanup();
-    }));
+    return cleanupBuilders();
   });
 
   function fixtureContent(p) {
     return fs.readFileSync(path.join(fixturePath, p)).toString();
   }
 
-  function tree(inputTree) {
-    builder = new broccoli.Builder(inputTree);
-
-    builders.push(builder);
-
-    return builder.build().then(function(inputTree) {
-      return walkSync(inputTree.directory)
-        .filter(function(p) { return !/\/$/.test(p); })
-        .reduce(function(files, p) {
-          files[p] = fs.readFileSync(path.join(inputTree.directory, p)).toString();
-          return files;
-        }, {});
-    });
-  }
-
-  function map() {
-    var cwd = process.cwd();
-    var args = arguments;
-
-    return new Promise(function(resolve) {
-      process.chdir(fixturePath);
-      resolve(tree(_map.apply(undefined, args)))
-    }).finally(function() {
-      process.chdir(cwd);
-    });
-  }
+  var map = makeTestHelper({
+    subject: _map,
+    fixturePath: fixturePath,
+    filter: function(paths, inputTree) {
+      return paths.filter(function(p) { return !/\/$/.test(p); }).reduce(function(files, p) {
+               files[p] = fs.readFileSync(path.join(inputTree.directory, p)).toString();
+               return files;
+             }, {});
+    }
+  });
 
   describe('tree and mapper', function() {
     it('identity', function() {
