@@ -1,44 +1,26 @@
-var broccoli = require('broccoli');
 var _mv = require('../lib/mv');
 var _find = require('../lib/find');
 var path = require('path');
-var walkSync = require('walk-sync');
-var Promise = require('rsvp').Promise;
 var chai = require('chai');
 var expect = chai.expect;
+var helpers = require('./helpers');
+var makeTestHelper = helpers.makeTestHelper;
+var cleanupBuilders = helpers.cleanupBuilders;
 
 describe('mv', function() {
   var fixturePath = path.join(__dirname, 'fixtures');
-  var builders = [];
 
   afterEach(function() {
-    return Promise.all(builders.map(function(builder) {
-      return builder.cleanup();
-    }));
+    return cleanupBuilders();
   });
 
-  function tree(inputTree) {
-    builder = new broccoli.Builder(inputTree);
-
-    builders.push(builder);
-
-    return builder.build().then(function(inputTree) {
-      return walkSync(inputTree.directory)
-        .filter(function(path) { return !/\/$/.test(path); });
-    });
-  }
-
-  function mv() {
-    var cwd = process.cwd();
-    var args = arguments;
-
-    return new Promise(function(resolve) {
-      process.chdir(fixturePath);
-      resolve(tree(_mv.apply(undefined, args)))
-    }).finally(function() {
-      process.chdir(cwd);
-    });
-  }
+  var mv = makeTestHelper({
+    subject: _mv,
+    fixturePath: fixturePath,
+    filter: function(paths) {
+      return paths.filter(function(path) { return !/\/$/.test(path); });
+    }
+  });
 
   describe('tree + destination', function() {
     it('move into node_modules', function() {

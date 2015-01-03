@@ -1,46 +1,26 @@
-var broccoli = require('broccoli');
-var _find    = require('../lib/find');
-var _debug   = require('../lib/debug');
-var expect   = require('chai').expect;
-var fs       = require('fs-extra');
-var path     = require('path');
-var Promise  = require('rsvp').Promise;
-var walkSync = require('walk-sync');
+var _find = require('../lib/find');
+var _debug = require('../lib/debug');
+var expect = require('chai').expect;
+var fs = require('fs-extra');
+var path = require('path');
+var helpers = require('./helpers');
+var makeTestHelper = helpers.makeTestHelper;
+var cleanupBuilders = helpers.cleanupBuilders;
 
 describe('debug', function() {
 
   var fixturePath = path.join(__dirname, 'fixtures');
-  var builders = [];
 
   afterEach(function() {
-    return Promise.all(builders.map(function(builder) {
+    return cleanupBuilders(function() {
       fs.removeSync(path.join(__dirname, 'fixtures/DEBUG-debug'));
-      return builder.cleanup();
-    }));
+    });
   });
 
-
-  function tree(inputTree) {
-    builder = new broccoli.Builder(inputTree);
-
-    builders.push(builder);
-
-    return builder.build().then(function(inputTree) {
-      return walkSync(inputTree.directory);
-    });
-  }
-
-  function debug() {
-    var cwd = process.cwd();
-    var args = arguments;
-
-    return new Promise(function(resolve) {
-      process.chdir(fixturePath);
-      resolve(tree(_debug.apply(undefined, args)))
-    }).finally(function() {
-      process.chdir(cwd);
-    });
-  }
+  var debug = makeTestHelper({
+    subject: _debug,
+    fixturePath: fixturePath
+  });
 
   it('should have an array of files and directorys in the tree', function() {
     return debug(_find('node_modules/mocha'), {name: 'debug'}).then(function(files) {
