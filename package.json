@@ -35,6 +35,7 @@
   "devDependencies": {
     "broccoli": "^0.13.3",
     "chai": "^1.10.0",
-    "mocha": "^2.1.0"
+    "mocha": "^2.1.0",
+    "sinon": "^1.12.2"
   }
 }
