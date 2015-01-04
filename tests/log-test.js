@@ -1,46 +1,41 @@
 var broccoli = require('broccoli');
 var _find = require('../lib/find');
 var _log = require('../lib/log');
-var Promise  = require('rsvp').Promise;
 var path = require('path');
 var expect = require('chai').expect;
-var walkSync = require('walk-sync');
+var sinon = require('sinon');
+var helpers = require('./helpers');
+var makeTestHelper = helpers.makeTestHelper;
+var cleanupBuilders = helpers.cleanupBuilders;
 
 describe('log', function() {
   var fixturePath = path.join(__dirname, 'fixtures');
   var builders = [];
 
-  afterEach(function() {
-    return Promise.all(builders.map(function(builder) {
-      return builder.cleanup();
-    }));
+  beforeEach(function() {
+    sinon.spy(console, 'log');
   });
 
-  function tree(inputTree) {
-    var builder = new broccoli.Builder(inputTree);
+  afterEach(function() {
+    console.log.restore();
+    return cleanupBuilders();
+  });
 
-    builders.push(builder);
-
-    return builder.build().then(function(inputTree) {
-      return inputTree;
-    });
-  }
-
-  function log() {
-    var cwd = process.cwd();
-    var args = arguments;
-
-    return new Promise(function(resolve) {
-      process.chdir(fixturePath);
-      resolve(tree(_log.apply(undefined, args)));
-    }).finally(function() {
-      process.chdir(cwd);
-    });
-  }
+  var log = makeTestHelper({
+    subject: _log,
+    fixturePath: fixturePath
+  });
 
   it('should print out the array of files in the tree', function() {
     return log(_find('node_modules/mocha')).then(function(files) {
-      expect(files.directory).to.eql([
+      expect(console.log.calledWith([
+        'node_modules/mocha/mocha.css',
+        'node_modules/mocha/mocha.js',
+        'node_modules/mocha/package.json'
+      ])).to.be.ok;
+      expect(files).to.eql([
+        'node_modules/',
+        'node_modules/mocha/',
         'node_modules/mocha/mocha.css',
         'node_modules/mocha/mocha.js',
         'node_modules/mocha/package.json'
@@ -50,7 +45,14 @@ describe('log', function() {
 
   it('should print out the tree of files to sdtout', function() {
     return log(_find('node_modules/mocha'), {output: 'tree'}).then(function(files) {
-      expect(files.directory).to.eql([
+      expect(console.log.calledWith('\n└── node_modules/\n'+
+      '   └── node_modules/mocha/\n'+
+      '      ├── node_modules/mocha/mocha.css\n'+
+      '      ├── node_modules/mocha/mocha.js\n'+
+      '      └── node_modules/mocha/package.json')).to.be.ok;
+      expect(files).to.eql([
+        'node_modules/',
+        'node_modules/mocha/',
         'node_modules/mocha/mocha.css',
         'node_modules/mocha/mocha.js',
         'node_modules/mocha/package.json'
