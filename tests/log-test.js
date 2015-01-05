@@ -7,6 +7,8 @@ var sinon = require('sinon');
 var helpers = require('./helpers');
 var makeTestHelper = helpers.makeTestHelper;
 var cleanupBuilders = helpers.cleanupBuilders;
+var chalk = require('chalk');
+var label = chalk.bold.cyan;
 
 describe('log', function() {
   var fixturePath = path.join(__dirname, 'fixtures');
@@ -57,6 +59,27 @@ describe('log', function() {
         'node_modules/mocha/mocha.js',
         'node_modules/mocha/package.json'
       ]);
+    });
+  });
+
+  it('should print out the tree of files to sdtout', function() {
+    return log(_find('node_modules/mocha'), {output: 'tree', label: 'log'}).then(function(files) {
+      expect(console.log.calledWith(label('log') + '\n└── node_modules/\n'+
+      '   └── node_modules/mocha/\n'+
+      '      ├── node_modules/mocha/mocha.css\n'+
+      '      ├── node_modules/mocha/mocha.js\n'+
+      '      └── node_modules/mocha/package.json')).to.be.ok;
+    });
+  });
+
+  it('should print out the array of files in the tree', function() {
+    return log(_find('node_modules/mocha'), {label: 'log'}).then(function(files) {
+      expect(console.log.calledWith(label('log'))).to.be.ok;
+      expect(console.log.calledWith([
+        'node_modules/mocha/mocha.css',
+        'node_modules/mocha/mocha.js',
+        'node_modules/mocha/package.json'
+      ])).to.be.ok;
     });
   });
 });
