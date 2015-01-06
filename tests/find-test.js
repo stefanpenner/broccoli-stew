@@ -206,5 +206,35 @@ describe('find', function() {
         ]);
       });
     });
+
+    it.only('input tree, and string filter', function() {
+      var cwd = process.cwd();
+      process.chdir(fixturePath);
+
+      try {
+        return find(_find('node_modules/mocha/'), '**/*.js').then(function(files) {
+          expect(files).to.eql([
+            'node_modules/mocha/mocha.js',
+          ]);
+        });
+      } finally {
+        process.chdir(cwd);
+      }
+    });
+
+    it.only('input tree, not filter', function() {
+      var cwd = process.cwd();
+      process.chdir(fixturePath);
+
+      try {
+        return find(_find('node_modules/mocha/')).then(function(files) {
+          expect(files).to.eql([
+            'node_modules/mocha/mocha.js',
+          ]);
+        });
+      } finally {
+        process.chdir(cwd);
+      }
+    });
   });
 });
