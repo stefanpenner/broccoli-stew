@@ -111,6 +111,15 @@ describe('find', function() {
         ]);
       });
     });
+
+    it('nested input tree and string filter', function() {
+      return find(_find(_find('node_modules'), '**/*.css')).then(function(files) {
+        expect(files).to.eql([
+          'node_modules/foo/foo.css',
+          'node_modules/mocha/mocha.css'
+        ]);
+      });
+    });
   });
 
   describe('unrooted', function() {
