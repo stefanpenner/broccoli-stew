@@ -27,7 +27,7 @@ describe('find', function() {
         expect(files).to.eql([
           'node_modules/mocha/mocha.css',
           'node_modules/mocha/mocha.js',
-          'node_modules/mocha/package.json',
+          'node_modules/mocha/package.json'
         ]);
       });
     });
@@ -90,6 +90,24 @@ describe('find', function() {
           'node_modules/foo/foo.css',
           'node_modules/mocha/mocha.css',
           'node_modules/mocha/mocha.js',
+        ]);
+      });
+    });
+
+    it('input tree, and string filter', function() {
+      return find(_find('node_modules/mocha/'), '**/*.js').then(function(files) {
+        expect(files).to.eql([
+          'node_modules/mocha/mocha.js',
+        ]);
+      });
+    });
+
+    it('input tree, not filter', function() {
+      return find(_find('node_modules/mocha/')).then(function(files) {
+        expect(files).to.eql([
+          'node_modules/mocha/mocha.css',
+          'node_modules/mocha/mocha.js',
+          'node_modules/mocha/package.json'
         ]);
       });
     });
