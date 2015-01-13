@@ -3,7 +3,7 @@ var _find = require('../lib/find');
 var path = require('path');
 var chai = require('chai');
 var expect = chai.expect;
-var helpers = require('./helpers');
+var helpers = require('broccoli-test-helpers');
 var makeTestHelper = helpers.makeTestHelper;
 var cleanupBuilders = helpers.cleanupBuilders;
 

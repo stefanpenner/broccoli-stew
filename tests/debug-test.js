@@ -3,7 +3,7 @@ var _debug = require('../lib/debug');
 var expect = require('chai').expect;
 var fs = require('fs-extra');
 var path = require('path');
-var helpers = require('./helpers');
+var helpers = require('broccoli-test-helpers');
 var makeTestHelper = helpers.makeTestHelper;
 var cleanupBuilders = helpers.cleanupBuilders;
 
