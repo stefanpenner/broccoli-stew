@@ -4,7 +4,7 @@ var path = require('path');
 var chai = require('chai');
 var expect = chai.expect;
 var fs = require('fs');
-var helpers = require('./helpers');
+var helpers = require('broccoli-test-helpers');
 var makeTestHelper = helpers.makeTestHelper;
 var cleanupBuilders = helpers.cleanupBuilders;
 
