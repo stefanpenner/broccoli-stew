@@ -23,7 +23,9 @@ describe('find', function() {
 
   describe('rooted at: ' + fixturePath, function() {
     it('finds sub tree (folder no glob)', function() {
-      return find('.', 'node_modules/mocha/').then(function(files) {
+      return find('.', 'node_modules/mocha/').then(function(results) {
+        var files = results.files;
+
         expect(files).to.eql([
           'node_modules/mocha/mocha.css',
           'node_modules/mocha/mocha.js',
@@ -33,13 +35,17 @@ describe('find', function() {
     });
 
     it('finds sub tree (ambigious folder/file)', function() {
-      return find('.', 'node_modules/mocha').then(function(files) {
+      return find('.', 'node_modules/mocha').then(function(results) {
+        var files = results.files;
+
         expect(files).to.eql([]);
       });
     });
 
     it('finds sub tree (with glob)', function() {
-      return find('.', 'node_modules/mocha/**/*').then(function(files) {
+      return find('.', 'node_modules/mocha/**/*').then(function(results) {
+        var files = results.files;
+
         expect(files).to.eql([
           'node_modules/mocha/mocha.css',
           'node_modules/mocha/mocha.js',
@@ -49,7 +55,9 @@ describe('find', function() {
     });
 
     it('finds subtree via globed expansion', function() {
-      return find('.', 'node_modules/mocha/*.{css,js}').then(function(files) {
+      return find('.', 'node_modules/mocha/*.{css,js}').then(function(results) {
+        var files = results.files;
+
         expect(files).to.eql([
           'node_modules/mocha/mocha.css',
           'node_modules/mocha/mocha.js'
@@ -58,7 +66,9 @@ describe('find', function() {
     });
 
     it('finds subtree via globed expansion for a single file', function() {
-      return find('.', 'node_modules/mocha/{mocha.css}').then(function(files) {
+      return find('.', 'node_modules/mocha/{mocha.css}').then(function(results) {
+        var files = results.files;
+
         expect(files).to.eql([
           'node_modules/mocha/mocha.css'
         ]);
@@ -66,7 +76,9 @@ describe('find', function() {
     });
 
     it('finds subtree via dual glob + single expansion', function() {
-      return find('.', '*/mocha/*.css').then(function(files) {
+      return find('.', '*/mocha/*.css').then(function(results) {
+        var files = results.files;
+
         expect(files).to.eql([
           'node_modules/mocha/mocha.css',
           'other/mocha/apple.css',
@@ -75,7 +87,9 @@ describe('find', function() {
     });
 
     it('finds subtree via dual glob + double expansion', function() {
-      return find('.', 'node_modules/**/*.{js,css}').then(function(files) {
+      return find('.', 'node_modules/**/*.{js,css}').then(function(results) {
+        var files = results.files;
+
         expect(files).to.eql([
           'node_modules/foo/foo.css',
           'node_modules/mocha/mocha.css',
@@ -85,7 +99,9 @@ describe('find', function() {
     });
 
     it('root + matcher path with glob + double expansion', function() {
-      return find('.', 'node_modules/**/*.{js,css}').then(function(files) {
+      return find('.', 'node_modules/**/*.{js,css}').then(function(results) {
+        var files = results.files;
+
         expect(files).to.eql([
           'node_modules/foo/foo.css',
           'node_modules/mocha/mocha.css',
@@ -95,7 +111,9 @@ describe('find', function() {
     });
 
     it('input tree, and string filter', function() {
-      return find(_find('node_modules/mocha/'), '**/*.js').then(function(files) {
+      return find(_find('node_modules/mocha/'), '**/*.js').then(function(results) {
+        var files = results.files;
+
         expect(files).to.eql([
           'node_modules/mocha/mocha.js',
         ]);
@@ -103,7 +121,9 @@ describe('find', function() {
     });
 
     it('input tree, not filter', function() {
-      return find(_find('node_modules/mocha/')).then(function(files) {
+      return find(_find('node_modules/mocha/')).then(function(results) {
+        var files = results.files;
+
         expect(files).to.eql([
           'node_modules/mocha/mocha.css',
           'node_modules/mocha/mocha.js',
@@ -113,7 +133,9 @@ describe('find', function() {
     });
 
     it('nested input tree and string filter', function() {
-      return find(_find(_find('node_modules'), '**/*.css')).then(function(files) {
+      return find(_find(_find('node_modules'), '**/*.css')).then(function(results) {
+        var files = results.files;
+
         expect(files).to.eql([
           'node_modules/foo/foo.css',
           'node_modules/mocha/mocha.css'
@@ -124,7 +146,9 @@ describe('find', function() {
 
   describe('unrooted', function() {
     it('finds sub tree', function() {
-      return find('node_modules/mocha').then(function(files) {
+      return find('node_modules/mocha').then(function(results) {
+        var files = results.files;
+
         expect(files).to.eql([
           'node_modules/mocha/mocha.css',
           'node_modules/mocha/mocha.js',
@@ -134,7 +158,9 @@ describe('find', function() {
     });
 
     it('finds subtree via globed expansion', function() {
-      return find('node_modules/mocha/*.{css,js}').then(function(files) {
+      return find('node_modules/mocha/*.{css,js}').then(function(results) {
+        var files = results.files;
+
         expect(files).to.eql([
           'node_modules/mocha/mocha.css',
           'node_modules/mocha/mocha.js',
@@ -143,7 +169,9 @@ describe('find', function() {
     });
 
     it('finds subtree via glob', function() {
-      return find('node_modules/mocha/*').then(function(files) {
+      return find('node_modules/mocha/*').then(function(results) {
+        var files = results.files;
+
         expect(files).to.eql([
           'node_modules/mocha/mocha.css',
           'node_modules/mocha/mocha.js',
@@ -153,7 +181,7 @@ describe('find', function() {
     });
 
     it('does not allow top level expansion', function() {
-      return find('{other,node_modules}/mocha/*.css').then(function(files) {
+      return find('{other,node_modules}/mocha/*.css').then(function(results) {
         throw new Error('should not get here');
       }, function(reason) {
         expect(reason.message).to.eq('top level glob or expansion not currently supported: `{other,node_modules}/mocha/*.css`');
@@ -169,7 +197,9 @@ describe('find', function() {
     });
 
     it('does allow 2nd level or more glob', function() {
-      return find('node_modules/*/*.css').then(function(files) {
+      return find('node_modules/*/*.css').then(function(results) {
+        var files = results.files;
+
         expect(files).to.eql([
           'node_modules/foo/foo.css',
           'node_modules/mocha/mocha.css',
@@ -178,7 +208,8 @@ describe('find', function() {
     });
 
     it('does allow 2nd level or more expansion', function() {
-      return find('node_modules/{mocha,}/*.css').then(function(files) {
+      return find('node_modules/{mocha,}/*.css').then(function(results) {
+        var files = results.files;
         expect(files).to.eql([
           'node_modules/mocha/mocha.css',
         ]);
@@ -186,7 +217,9 @@ describe('find', function() {
     });
 
     it('specific file, but no expansion', function() {
-      return find('node_modules/mocha/{mocha.css}').then(function(files) {
+      return find('node_modules/mocha/{mocha.css}').then(function(results) {
+        var files = results.files;
+
         expect(files).to.eql([
           'node_modules/mocha/mocha.css',
         ]);
@@ -199,7 +232,9 @@ describe('find', function() {
       return find([
         'node_modules/mocha',
         'other/mocha'
-      ]).then(function(files) {
+      ]).then(function(results) {
+        var files = results.files;
+
         expect(files).to.eql([
           'node_modules/mocha/mocha.css',
           'node_modules/mocha/mocha.js',
@@ -214,7 +249,9 @@ describe('find', function() {
       return find([
         'node_modules/mocha/*.js',
         'other/mocha/*.js',
-      ]).then(function(files) {
+      ]).then(function(results) {
+        var files = results.files;
+
         expect(files).to.eql([
           'node_modules/mocha/mocha.js',
           'other/mocha/apple.js',
@@ -226,7 +263,9 @@ describe('find', function() {
       return find([
         'node_modules/mocha/',
         'other/mocha/',
-      ], '**/*.js').then(function(files) {
+      ], '**/*.js').then(function(results) {
+        var files = results.files;
+
         expect(files).to.eql([
           'node_modules/mocha/mocha.js',
           'other/mocha/apple.js',

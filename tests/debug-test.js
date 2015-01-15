@@ -23,7 +23,9 @@ describe('debug', function() {
   });
 
   it('should have an array of files and directorys in the tree', function() {
-    return debug(_find('node_modules/mocha'), {name: 'debug'}).then(function(files) {
+    return debug(_find('node_modules/mocha'), {name: 'debug'}).then(function(results) {
+      var files = results.files;
+
       expect(files).to.eql([
         'node_modules/',
         'node_modules/mocha/',
@@ -35,7 +37,9 @@ describe('debug', function() {
   });
 
   it('should write files to disk in correct folder', function() {
-    return debug(_find('node_modules/mocha'), {name: 'debug'}).then(function(files) {
+    return debug(_find('node_modules/mocha'), {name: 'debug'}).then(function(results) {
+      var files = results.files;
+
       var base = 'tests/fixtures/';
       var debugDir = path.join(process.cwd(), base + 'DEBUG-debug');
       var fixture = path.join(process.cwd(), base + 'node_modules/mocha/mocha.js');

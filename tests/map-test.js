@@ -34,7 +34,9 @@ describe('map', function() {
     it('identity', function() {
       return map(_find('node_modules/**/*'), function(content) {
         return content;
-      }).then(function(files) {
+      }).then(function(results) {
+        var files = results.files;
+
         expect(files['node_modules/foo/foo.css'       ]).to.eql(fixtureContent('node_modules/foo/foo.css'));
         expect(files['node_modules/mocha/mocha.css'   ]).to.eql(fixtureContent('node_modules/mocha/mocha.css'));
         expect(files['node_modules/mocha/mocha.js'    ]).to.eql(fixtureContent('node_modules/mocha/mocha.js'));
@@ -45,7 +47,9 @@ describe('map', function() {
     it('prepend', function() {
       return map(_find('node_modules/**/*'), function(content) {
         return 'hi\n' + content;
-      }).then(function(files) {
+      }).then(function(results) {
+        var files = results.files;
+
         expect(files['node_modules/foo/foo.css'       ]).to.eql('hi\n' + fixtureContent('node_modules/foo/foo.css'));
         expect(files['node_modules/mocha/mocha.css'   ]).to.eql('hi\n' + fixtureContent('node_modules/mocha/mocha.css'));
         expect(files['node_modules/mocha/mocha.js'    ]).to.eql('hi\n' + fixtureContent('node_modules/mocha/mocha.js'));
@@ -61,7 +65,9 @@ describe('map', function() {
         expect(relativePath).to.eql('node_modules/mocha/mocha.js');
         count++;
         return 'hi\n' + content;
-      }).then(function(files) {
+      }).then(function(results) {
+        var files = results.files;
+
         expect(count).to.eql(1);
         expect(files['node_modules/foo/foo.css'       ]).to.eql(fixtureContent('node_modules/foo/foo.css'));
         expect(files['node_modules/mocha/mocha.css'   ]).to.eql(fixtureContent('node_modules/mocha/mocha.css'));
@@ -73,7 +79,9 @@ describe('map', function() {
     it('prepend', function() {
       return map(_find('node_modules/**/*'), function(content) {
         return 'hi\n' + content;
-      }).then(function(files) {
+      }).then(function(results) {
+        var files = results.files;
+
         expect(files['node_modules/foo/foo.css'       ]).to.eql('hi\n' + fixtureContent('/node_modules/foo/foo.css'));
         expect(files['node_modules/mocha/mocha.css'   ]).to.eql('hi\n' + fixtureContent('/node_modules/mocha/mocha.css'));
         expect(files['node_modules/mocha/mocha.js'    ]).to.eql('hi\n' + fixtureContent('/node_modules/mocha/mocha.js'));
