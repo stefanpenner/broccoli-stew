@@ -6,6 +6,7 @@ var path = require('path');
 var helpers = require('broccoli-test-helpers');
 var makeTestHelper = helpers.makeTestHelper;
 var cleanupBuilders = helpers.cleanupBuilders;
+var walkSync = require('walk-sync');
 
 describe('debug', function() {
 
@@ -33,6 +34,28 @@ describe('debug', function() {
         'node_modules/mocha/mocha.js',
         'node_modules/mocha/package.json'
       ]);
+    });
+  });
+
+  it('should write output to both debug folder and normal result', function() {
+    var mochaFixturePath = path.join(fixturePath, 'node_modules', 'mocha');
+
+    return debug(mochaFixturePath, {name: 'debug'}).then(function(results) {
+      var files = walkSync(mochaFixturePath);
+      var outputDir = results.directory;
+
+      files.forEach(function(file) {
+        if (file.slice(-1) === '/') { return; }
+
+        var debugPath = path.join(fixturePath, 'DEBUG-debug', file);
+        var treeOutputPath = path.join(outputDir, file);
+        var sourcePath = path.join(mochaFixturePath, file);
+
+        var expected = fs.readFileSync(sourcePath, { encoding: 'utf8' });
+
+        expect(fs.readFileSync(debugPath, { encoding: 'utf8' })).to.equal(expected);
+        expect(fs.readFileSync(treeOutputPath, { encoding: 'utf8' })).to.equal(expected);
+      });
     });
   });
 
