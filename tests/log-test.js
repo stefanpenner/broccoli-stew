@@ -29,7 +29,9 @@ describe('log', function() {
   });
 
   it('should print out the array of files in the tree', function() {
-    return log(_find('node_modules/mocha')).then(function(files) {
+    return log(_find('node_modules/mocha')).then(function(results) {
+      var files = results.files;
+
       expect(console.log.calledWith([
         'node_modules/mocha/mocha.css',
         'node_modules/mocha/mocha.js',
@@ -46,7 +48,9 @@ describe('log', function() {
   });
 
   it('should print out the tree of files to sdtout', function() {
-    return log(_find('node_modules/mocha'), {output: 'tree'}).then(function(files) {
+    return log(_find('node_modules/mocha'), {output: 'tree'}).then(function(results) {
+      var files = results.files;
+
       expect(console.log.calledWith('\n└── node_modules/\n'+
       '   └── node_modules/mocha/\n'+
       '      ├── node_modules/mocha/mocha.css\n'+
@@ -63,7 +67,9 @@ describe('log', function() {
   });
 
   it('should print out the tree of files to sdtout', function() {
-    return log(_find('node_modules/mocha'), {output: 'tree', label: 'log'}).then(function(files) {
+    return log(_find('node_modules/mocha'), {output: 'tree', label: 'log'}).then(function(results) {
+      var files = results.files;
+
       expect(console.log.calledWith(label('log') + '\n└── node_modules/\n'+
       '   └── node_modules/mocha/\n'+
       '      ├── node_modules/mocha/mocha.css\n'+
@@ -73,7 +79,9 @@ describe('log', function() {
   });
 
   it('should print out the array of files in the tree', function() {
-    return log(_find('node_modules/mocha'), {label: 'log'}).then(function(files) {
+    return log(_find('node_modules/mocha'), {label: 'log'}).then(function(results) {
+      var files = results.files;
+
       expect(console.log.calledWith(label('log'))).to.be.ok;
       expect(console.log.calledWith([
         'node_modules/mocha/mocha.css',
