@@ -90,4 +90,17 @@ describe('log', function() {
       ])).to.be.ok;
     });
   });
+
+  it('should print out the array of files in the tree (with a string options label)', function() {
+    return log(_find('node_modules/mocha'), 'the-label').then(function(results) {
+      var files = results.files;
+
+      expect(console.log.calledWith(label('the-label'))).to.be.ok;
+      expect(console.log.calledWith([
+        'node_modules/mocha/mocha.css',
+        'node_modules/mocha/mocha.js',
+        'node_modules/mocha/package.json'
+      ])).to.be.ok;
+    });
+  });
 });
