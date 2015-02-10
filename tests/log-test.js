@@ -12,14 +12,21 @@ var label = chalk.bold.cyan;
 
 describe('log', function() {
   var fixturePath = path.join(__dirname, 'fixtures');
-  var builders = [];
+  var called = [];
 
+  function mockDebugger() {
+    return function() {
+      called.push(arguments[0]);
+    };
+  }
+  
   beforeEach(function() {
-    sinon.spy(console, 'log');
+    process.env.DEBUG = 'test';
   });
 
   afterEach(function() {
-    console.log.restore();
+    process.env.DEBUG = false;
+    called = [];
     return cleanupBuilders();
   });
 
@@ -29,14 +36,18 @@ describe('log', function() {
   });
 
   it('should print out the array of files in the tree', function() {
-    return log(_find('node_modules/mocha')).then(function(results) {
+    return log(_find('node_modules/mocha'), {
+      label: 'test',
+      debugger: mockDebugger
+    }).then(function(results) {
       var files = results.files;
 
-      expect(console.log.calledWith([
+      expect(called[0]).to.eql([
         'node_modules/mocha/mocha.css',
         'node_modules/mocha/mocha.js',
         'node_modules/mocha/package.json'
-      ])).to.be.ok;
+      ]);
+
       expect(files).to.eql([
         'node_modules/',
         'node_modules/mocha/',
@@ -47,15 +58,19 @@ describe('log', function() {
     });
   });
 
-  it('should print out the tree of files to sdtout', function() {
-    return log(_find('node_modules/mocha'), {output: 'tree'}).then(function(results) {
+  it('should print out the tree of files to sdtout (as tree structure)', function() {
+    return log(_find('node_modules/mocha'), {
+      output: 'tree',
+      label: 'test',
+      debugger: mockDebugger
+    }).then(function(results) {
       var files = results.files;
 
-      expect(console.log.calledWith('\n└── node_modules/\n'+
+      expect(called[0]).to.eql('\n└── node_modules/\n'+
       '   └── node_modules/mocha/\n'+
       '      ├── node_modules/mocha/mocha.css\n'+
       '      ├── node_modules/mocha/mocha.js\n'+
-      '      └── node_modules/mocha/package.json')).to.be.ok;
+      '      └── node_modules/mocha/package.json');
       expect(files).to.eql([
         'node_modules/',
         'node_modules/mocha/',
@@ -66,41 +81,14 @@ describe('log', function() {
     });
   });
 
-  it('should print out the tree of files to sdtout', function() {
-    return log(_find('node_modules/mocha'), {output: 'tree', label: 'log'}).then(function(results) {
-      var files = results.files;
 
-      expect(console.log.calledWith(label('log') + '\n└── node_modules/\n'+
-      '   └── node_modules/mocha/\n'+
-      '      ├── node_modules/mocha/mocha.css\n'+
-      '      ├── node_modules/mocha/mocha.js\n'+
-      '      └── node_modules/mocha/package.json')).to.be.ok;
-    });
-  });
-
-  it('should print out the array of files in the tree', function() {
-    return log(_find('node_modules/mocha'), {label: 'log'}).then(function(results) {
-      var files = results.files;
-
-      expect(console.log.calledWith(label('log'))).to.be.ok;
-      expect(console.log.calledWith([
-        'node_modules/mocha/mocha.css',
-        'node_modules/mocha/mocha.js',
-        'node_modules/mocha/package.json'
-      ])).to.be.ok;
-    });
-  });
-
-  it('should print out the array of files in the tree (with a string options label)', function() {
-    return log(_find('node_modules/mocha'), 'the-label').then(function(results) {
-      var files = results.files;
-
-      expect(console.log.calledWith(label('the-label'))).to.be.ok;
-      expect(console.log.calledWith([
-        'node_modules/mocha/mocha.css',
-        'node_modules/mocha/mocha.js',
-        'node_modules/mocha/package.json'
-      ])).to.be.ok;
+  it('should be a pass through if not in process.env.DEBUG', function() {
+    process.env.DEBUG = false;
+    return log(_find('node_modules/mocha'), {
+      label: 'baz',
+      debugger: mockDebugger
+    }).then(function() {
+      expect(called).to.eql([]);
     });
   });
 });
