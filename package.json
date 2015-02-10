@@ -1,6 +1,6 @@
 {
   "name": "broccoli-stew",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "foundation of any healthy brocfile",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,8 @@
     "url": "https://github.com/stefanpenner/broccoli-stew.git"
   },
   "keywords": [
-    "broccoli"
+    "broccoli",
+    "broccoli-plugin"
   ],
   "author": "Stefan Penner & Robert Jackson",
   "license": "ISC",
