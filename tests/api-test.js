@@ -11,5 +11,6 @@ describe('api', function() {
     expect(stew.log).a('function');
     expect(stew.debug).a('function');
     expect(stew.rm).a('function');
+    expect(stew.afterBuild).a('function');
   });
 });

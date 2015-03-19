@@ -6,5 +6,6 @@ module.exports = {
   map: require('./lib/map'),
   log: require('./lib/log'),
   debug: require('./lib/debug'),
-  rm: require('./lib/rm')
+  rm: require('./lib/rm'),
+  afterBuild: require('./lib/afterBuild')
 };
