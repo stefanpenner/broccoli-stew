@@ -76,4 +76,23 @@ describe('debug', function() {
       })).to.equal(fs.readFileSync(fixture, {encoding: 'utf8'}));
     });
   });
+  
+  it('should write files to disk in correct folder with dir option', function() {
+    return debug(_find('node_modules/mocha'), {name: 'debug', dir: 'mydir'}).then(function(results) {
+      var files = results.files;
+
+      var base = 'tests/fixtures/';
+      var debugDir = path.join(process.cwd(), base + 'mydir/debug');
+      var fixture = path.join(process.cwd(), base + 'node_modules/mocha/mocha.js');
+
+      files.forEach(function(file) {
+        expect(fs.existsSync(path.join(debugDir, file))).to.be.ok;
+      });
+
+      expect(fs.readFileSync(path.join(debugDir, 'node_modules/mocha/mocha.js'), {
+        encoding: 'utf8'
+      })).to.equal(fs.readFileSync(fixture, {encoding: 'utf8'}));
+    });
+  });
+  
 });
