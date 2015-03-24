@@ -14,3 +14,8 @@ Currently the following methods are available:
 - [`log`](https://github.com/stefanpenner/broccoli-stew/blob/master/lib/log.js#L27) - Logs out files in the passed tree.
 - [`debug`](https://github.com/stefanpenner/broccoli-stew/blob/master/lib/debug.js#L12) - Writes the passed tree to disk at the root of the project.
 - [`rm`](https://github.com/stefanpenner/broccoli-stew/blob/master/lib/rm.js#L40) - Remove files from a tree.
+
+
+## Ok, but tell me more
+
+* [using broccoli-stew to debug a broccoli tree](http://reefpoints.dockyard.com/2015/02/02/debugging-a-broccoli-tree.html)
