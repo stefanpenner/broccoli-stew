@@ -58,6 +58,23 @@ describe('map', function() {
     });
   });
 
+  describe('source maps', function() {
+    it('makes sure source maps stay in sync with source code', function() {
+      var license = 'ZOMG LICENSE MIT PATENT TROLLS';
+
+      return map(_find('rsvp/**'), function(content) {
+        content.prepend(license);
+
+        return content;
+      }).then(function(results) {
+        var files = results.files;
+
+        expect(files['rsvp/rsvp.js']).to.eql(license + fixtureContent('rsvp/rsvp.js'));
+        expect(files['rsvp/rsvp.js.map']).to.eql(license + fixtureContent('rsvp/rsvp.js.map'));
+      });
+    });
+  });
+
   describe('tree, filter and mapper', function() {
     it('leaves all files but the match alone', function() {
       var count = 0;
