@@ -1,4 +1,4 @@
-var _afterBuild = require('../lib/afterBuild');
+var _afterBuild = require('../lib/after-build');
 var path = require('path');
 var chai = require('chai');
 var sinon = require('sinon');
