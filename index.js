@@ -7,7 +7,7 @@ module.exports = {
   log: require('./lib/log'),
   debug: require('./lib/debug'),
   rm: require('./lib/rm'),
-  beforeBuild: require('./lib/beforeBuild'),
-  afterBuild: require('./lib/afterBuild'),
-  wrapBuild: require('./lib/wrapBuild')
+  beforeBuild: require('./lib/before-build'),
+  afterBuild: require('./lib/after-build'),
+  wrapBuild: require('./lib/wrap-build')
 };

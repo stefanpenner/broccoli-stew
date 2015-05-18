@@ -1,4 +1,4 @@
-var _beforeBuild = require('../lib/beforeBuild');
+var _beforeBuild = require('../lib/before-build');
 var path = require('path');
 var chai = require('chai');
 var sinon = require('sinon');

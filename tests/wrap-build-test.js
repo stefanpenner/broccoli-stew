@@ -1,4 +1,4 @@
-var _wrapBuild = require('../lib/wrapBuild');
+var _wrapBuild = require('../lib/wrap-build');
 var path = require('path');
 var chai = require('chai');
 var sinon = require('sinon');
