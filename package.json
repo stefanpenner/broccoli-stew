@@ -22,7 +22,6 @@
   },
   "homepage": "https://github.com/stefanpenner/broccoli-stew",
   "dependencies": {
-    "broccoli-filter": "^0.1.14",
     "broccoli-funnel": "^0.2.3",
     "broccoli-merge-trees": "^0.2.1",
     "chalk": "^0.5.1",
