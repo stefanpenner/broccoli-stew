@@ -59,6 +59,17 @@ describe('debug', function() {
     });
   });
 
+  it('suports string second argument as label', function() {
+    var mochaFixturePath = path.join(fixturePath, 'node_modules', 'mocha');
+
+    return debug(mochaFixturePath, 'debug2').then(function(results) {
+      var outputDir = results.directory;
+
+      var debugPath = path.join(fixturePath, 'DEBUG-debug2');
+      expect(fs.existsSync(debugPath)).to.be.true;
+    });
+  });
+
   it('should write files to disk in correct folder', function() {
     return debug(_find('node_modules/mocha'), {name: 'debug'}).then(function(results) {
       var files = results.files;
@@ -76,7 +87,7 @@ describe('debug', function() {
       })).to.equal(fs.readFileSync(fixture, {encoding: 'utf8'}));
     });
   });
-  
+
   it('should write files to disk in correct folder with dir option', function() {
     return debug(_find('node_modules/mocha'), {name: 'debug', dir: 'mydir'}).then(function(results) {
       var files = results.files;
@@ -94,5 +105,5 @@ describe('debug', function() {
       })).to.equal(fs.readFileSync(fixture, {encoding: 'utf8'}));
     });
   });
-  
+
 });
