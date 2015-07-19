@@ -142,7 +142,7 @@ describe('map', function() {
         args = [];
 
         // Bust the filter's Cache
-        results.subject._cache = Object.create(null);
+        results.subject._cache.deleteExcept([]);
 
         // Rebuild to verify build stability
         return results.builder();
