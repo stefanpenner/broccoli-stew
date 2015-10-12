@@ -20,17 +20,17 @@ describe('npm', function() {
     return cleanupBuilders();
   });
 
-  var entry = makeTestHelper({
-    subject: _npm.entry,
+  var npmMain = makeTestHelper({
+    subject: _npm.main,
     fixturePath: fixturePath,
     filter: function(paths) {
       return paths.filter(function(path) { return !/\/$/.test(path); });
     }
   });
 
-  describe('entry', function(){
+  describe('npm.main', function(){
     it("returns tree with file from main", function() {
-      return entry('bar').then(function(result){
+      return npmMain('bar').then(function(result){
         var files = result.files;
 
         expect(files).to.eql([
@@ -41,7 +41,7 @@ describe('npm', function() {
     });
 
     it("renames file in entry when new file name given", function(){
-      return entry('bar', 'hot/chili.js').then(function(result){
+      return npmMain('bar', 'hot/chili.js').then(function(result){
         var files = result.files;
 
         expect(files).to.eql([
@@ -51,15 +51,9 @@ describe('npm', function() {
     });
 
     it("entry throws an exception when not present in package.json", function(){
-      return entry('baz').catch(function(error){
+      return npmMain('baz').catch(function(error){
         expect(error).to.eq('package.json for baz does not have main property');
       });
-    });
-  });
-
-  describe('entryPath', function(){
-    it('return path to script in package.json#main', function(){
-      expect(_npm.entryPath('bar')).to.eq(path.join(mockResolve('bar'), 'stool.js'));
     });
   });
 });
