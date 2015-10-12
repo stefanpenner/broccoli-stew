@@ -273,9 +273,4 @@ describe('find', function() {
       });
     });
   });
-
-  it('treats single string as identity', function() {
-    expect(_find('foo')).to.eql('foo');
-  });
-
 });
