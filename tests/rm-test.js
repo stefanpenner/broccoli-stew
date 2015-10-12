@@ -55,10 +55,9 @@ describe('rm', function() {
       ]);
     });
   });
-  // walking at the root, isn't going to work well unless we move the TMP dir out
-  // of the root
-  //
-  // it.only('rm glob at root', function() {
+
+  // walkSync needs to support fast-path exludes for this feature to work (and mitigate chance of cycles)
+  // it('rm glob at root', function() {
   //   return rm('.', 'node_modules/mocha/mocha.js').then(function(results) {
   //     var files = results.files;
 
