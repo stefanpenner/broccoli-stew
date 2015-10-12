@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha tests/*-test.js",
+    "test:debug": "mocha debug tests/*-test.js",
     "test:watch": "mocha --watch tests/*-test.js"
   },
   "repository": {
