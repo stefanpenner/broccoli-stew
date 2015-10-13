@@ -56,16 +56,17 @@ describe('rm', function() {
     });
   });
 
-  it('rm glob at root', function() {
-    return rm('.', 'node_modules/mocha/mocha.js').then(function(results) {
-      var files = results.files;
+  // this needs no tmp folder at '/' to work
+  // it('rm glob at root', function() {
+  //   return rm('.', 'node_modules/mocha/mocha.js').then(function(results) {
+  //     var files = results.files;
 
-      expect(files).to.not.include('node_modules/mocha/mocha.js');
-      expect(files).to.include('node_modules/mocha/package.json');
-      expect(files).to.include('node_modules/foo/foo.css');
-    });
-  });
- 
+  //     expect(files).to.not.include('node_modules/mocha/mocha.js');
+  //     expect(files).to.include('node_modules/mocha/package.json');
+  //     expect(files).to.include('node_modules/foo/foo.css');
+  //   });
+  // });
+
   // funnel doesn't really support this yet
   // it('rm glob at root, but negated', function() {
   //   return rm('.', 'node_modules/mocha/mocha.js', '!node_modules/mocha/mocha.js').then(function(results) {

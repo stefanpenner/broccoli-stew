@@ -92,7 +92,8 @@ describe('map', function() {
     it('should keep output paths stable across builds', function() {
       var args = [];
       var builds = [];
-      var Filter = require('cauliflower-filter');
+      var Filter = require('broccoli-filter');
+
       function F(inputTree) {
         'use strict';
         if (!this) return new F(inputTree);
