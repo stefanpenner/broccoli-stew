@@ -56,7 +56,7 @@ describe('rm', function() {
     });
   });
 
-  // walkSync needs to support fast-path exludes for this feature to work (and mitigate chance of cycles)
+  // this needs no tmp folder at '/' to work
   // it('rm glob at root', function() {
   //   return rm('.', 'node_modules/mocha/mocha.js').then(function(results) {
   //     var files = results.files;
