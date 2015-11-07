@@ -1,6 +1,6 @@
 {
   "name": "broccoli-stew",
-  "version": "0.3.6",
+  "version": "1.0.0",
   "description": "foundation of any healthy brocfile",
   "main": "index.js",
   "scripts": {
