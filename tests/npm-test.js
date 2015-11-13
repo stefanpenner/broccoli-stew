@@ -4,7 +4,7 @@ var expect = chai.expect;
 var helpers = require('broccoli-test-helpers');
 var makeTestHelper = helpers.makeTestHelper;
 var cleanupBuilders = helpers.cleanupBuilders;
-var rewire =  require('rewire');
+var proxyquire =  require('proxyquire');
 
 describe('npm', function() {
   var fixturePath = path.join(__dirname, 'fixtures', 'npm');
@@ -13,15 +13,16 @@ describe('npm', function() {
     return path.join(fixturePath, 'node_modules', moduleName);
   }
 
-  var _npm = rewire('../lib/npm');
-  _npm.__set__('resolve', mockResolve);
+  var npm = proxyquire('../lib/npm', {
+    './utils/require-resolve': mockResolve
+  });
 
   afterEach(function() {
     return cleanupBuilders();
   });
 
   var npmMain = makeTestHelper({
-    subject: _npm.main,
+    subject: npm.main,
     fixturePath: fixturePath,
     filter: function(paths) {
       return paths.filter(function(path) { return !/\/$/.test(path); });
@@ -31,12 +32,7 @@ describe('npm', function() {
   describe('npm.main', function(){
     it("returns tree with file from main", function() {
       return npmMain('bar').then(function(result){
-        var files = result.files;
-
-        expect(files).to.eql([
-          // TODO: ask stef why find returns relative paths
-          path.join(mockResolve('bar'), 'stool.js').substring(1)
-        ]);
+        expect(result.files).to.eql(['stool.js']);
       });
     });
 
@@ -52,7 +48,7 @@ describe('npm', function() {
 
     it("entry throws an exception when not present in package.json", function(){
       return npmMain('baz').catch(function(error){
-        expect(error).to.eq('package.json for baz does not have main property');
+        expect(error.message).to.eq('package.json for baz does not have main property');
       });
     });
   });
