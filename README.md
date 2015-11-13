@@ -7,7 +7,7 @@ Provides commonly used convenience functions for developing broccoli based build
 Currently the following methods are available:
 
 - [`env`](https://github.com/stefanpenner/broccoli-stew/blob/master/lib/env.js#L27) - Conditionally runs a callback based upon the current environment.
-- [`mv`](https://github.com/stefanpenner/broccoli-stew/blob/master/lib/mv.js#L58) -  Moves an input tree to a different location. 
+- [`mv`](https://github.com/stefanpenner/broccoli-stew/blob/master/lib/mv.js#L58) -  Moves an input tree to a different location.
 - [`rename`](https://github.com/stefanpenner/broccoli-stew/blob/master/lib/rename.js#L26) - Renames files in a tree.
 - [`find`](https://github.com/stefanpenner/broccoli-stew/blob/master/lib/find.js#L85) - Match files in a tree.
 - [`map`](https://github.com/stefanpenner/broccoli-stew/blob/master/lib/map.js#L31) - Maps files, allow for simple content mutation.
@@ -17,7 +17,8 @@ Currently the following methods are available:
 - [`beforeBuild`](https://github.com/stefanpenner/broccoli-stew/blob/master/lib/before-build.js) - Calls a callback function before the tree is read.
 - [`afterBuild`](https://github.com/stefanpenner/broccoli-stew/blob/master/lib/after-build.js) - Calls a callback function after the tree is read.
 - [`wrapBuild`](https://github.com/stefanpenner/broccoli-stew/blob/master/lib/wrap-build.js) - Calls callback functions before and after the tree is read.
-
+-
+[`npm.main`](https://github.com/stefanpenner/broccoli-stew/blob/master/lib/npm.js#L17) - Create a tree with Node module's main entry
 
 
 ## Ok, but tell me more
