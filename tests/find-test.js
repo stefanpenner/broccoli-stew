@@ -276,7 +276,7 @@ describe('find', function() {
 
   describe('ambient os', function() {
     it('correctly handles path.join inputs', function() {
-      find(
+      return find(
         path.join('node_modules', 'mocha', '{mocha.js}')
       ).then(function(results) {
         var files = results.files;
