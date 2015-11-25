@@ -286,5 +286,26 @@ describe('find', function() {
         ]);
       });
     });
+
+    function expand(input) {
+      var filePath = path.dirname(input);
+      var file = path.basename(input);
+
+      return filePath + '/{' + file + '}';
+    }
+
+    it('correctly handles require.resolve + expand', function() {
+      var root =  process.cwd().replace(/[a-z]:[\\\/]/i, '').split(path.sep).join('/').replace(/^\//, '');
+
+      return find(
+        expand(require.resolve('whatwg-fetch'))
+      ).then(function(results) {
+        var files = results.files;
+
+        expect(files).to.eql([
+          root + '/node_modules/whatwg-fetch/fetch.js'
+        ]);
+      });
+    });
   });
 });
