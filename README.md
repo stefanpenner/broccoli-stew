@@ -17,8 +17,7 @@ Currently the following methods are available:
 - [`beforeBuild`](https://github.com/stefanpenner/broccoli-stew/blob/master/lib/before-build.js) - Calls a callback function before the tree is read.
 - [`afterBuild`](https://github.com/stefanpenner/broccoli-stew/blob/master/lib/after-build.js) - Calls a callback function after the tree is read.
 - [`wrapBuild`](https://github.com/stefanpenner/broccoli-stew/blob/master/lib/wrap-build.js) - Calls callback functions before and after the tree is read.
--
-[`npm.main`](https://github.com/stefanpenner/broccoli-stew/blob/master/lib/npm.js#L17) - Create a tree with Node module's main entry
+- [`npm.main`](https://github.com/stefanpenner/broccoli-stew/blob/master/lib/npm.js#L17) - Create a tree with Node module's main entry
 
 
 ## Ok, but tell me more
