@@ -18,7 +18,7 @@ describe('npm', function() {
     fixturePath: fixturePath
   });
 
-  describe.only('npm.main', function(){
+  describe('npm.main', function(){
     it("benchmark.js", function() {
       return npmMain('benchmark').then(function(result){
         expect(result.files).to.eql([
