@@ -34,6 +34,7 @@
     "minimatch": "^2.0.1",
     "resolve": "^1.1.6",
     "rsvp": "^3.0.16",
+    "sanitize-filename": "^1.5.3",
     "walk-sync": "^0.1.3"
   },
   "devDependencies": {
