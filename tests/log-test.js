@@ -33,6 +33,8 @@ describe('log', function() {
         var files = results.files;
 
         expect(console.log.calledWith([
+          'node_modules/',
+          'node_modules/mocha/',
           'node_modules/mocha/mocha.css',
           'node_modules/mocha/mocha.js',
           'node_modules/mocha/package.json'
@@ -129,7 +131,7 @@ describe('log', function() {
         called.push(arguments[0]);
       };
     }
-    
+
     beforeEach(function() {
       process.env.DEBUG = 'test';
     });
@@ -161,6 +163,8 @@ describe('log', function() {
         var files = results.files;
 
         expect(called[0]).to.eql([
+          'node_modules/',
+          'node_modules/mocha/',
           'node_modules/mocha/mocha.css',
           'node_modules/mocha/mocha.js',
           'node_modules/mocha/package.json'
