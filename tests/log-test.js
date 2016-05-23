@@ -142,6 +142,21 @@ describe('log', function() {
       return cleanupBuilders();
     });
 
+    it('shouldn\'t throw if there is no DEBUG env', function(done) {
+      function runMe() {
+        delete process.env.DEBUG;
+        return log(_find('node_modules/mocha'), {
+          label: 'test',
+          debugOnly: true,
+          debugger: mockDebugger
+        }).then(function() {
+          done();
+        });
+      }
+
+      expect(runMe).to.not.throw(TypeError);
+    });
+
     it('shouldn\'t print if the label doesn\'t match DEBUG env', function() {
       process.env.DEBUG = 'fhqwhgads';
       return log(_find('node_modules/mocha'), {
