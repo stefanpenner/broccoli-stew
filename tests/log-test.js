@@ -180,6 +180,33 @@ describe('log', function() {
       });
     });
 
+    it('should print out the array of files in the tree for partial pattern match', function() {
+      process.env.DEBUG = '*test';
+      return log(_find('node_modules/mocha'), {
+        label: 'test',
+        debugOnly: true,
+        debugger: mockDebugger
+      }).then(function(results) {
+        var files = results.files;
+
+        expect(called[0]).to.eql([
+          'node_modules/',
+          'node_modules/mocha/',
+          'node_modules/mocha/mocha.css',
+          'node_modules/mocha/mocha.js',
+          'node_modules/mocha/package.json'
+        ]);
+
+        expect(files).to.eql([
+          'node_modules/',
+          'node_modules/mocha/',
+          'node_modules/mocha/mocha.css',
+          'node_modules/mocha/mocha.js',
+          'node_modules/mocha/package.json'
+        ]);
+      });
+    });
+
     it('should print out the tree of files to sdtout (as tree structure)', function() {
       return log(_find('node_modules/mocha'), {
         output: 'tree',
