@@ -8,11 +8,16 @@ init:
 environment:
   matrix:
     - nodejs_version: "0.10"
+    - nodejs_version: "0.12"
+
+platform:
+  - x86
 
 # Install scripts. (runs after repo cloning)
 install:
   # Get the latest stable version of Node 0.STABLE.latest
-  - ps: Install-Product node 0.10.30 x86
+  - ps: Install-Product node $env:nodejs_version
+  - npm install -g npm
   # Typical npm stuff.
   - md C:\nc
   - npm config set cache C:\nc
