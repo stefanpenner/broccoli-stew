@@ -22,4 +22,4 @@ Currently the following methods are available:
 
 ## Ok, but tell me more
 
-* [using broccoli-stew to debug a broccoli tree](http://reefpoints.dockyard.com/2015/02/02/debugging-a-broccoli-tree.html)
+* [using broccoli-stew to debug a broccoli tree](https://dockyard.com/blog/2015/02/02/debugging-a-broccoli-tree)
