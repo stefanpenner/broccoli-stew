@@ -3,6 +3,10 @@
   "version": "1.3.2",
   "description": "foundation of any healthy brocfile",
   "main": "index.js",
+  "files": [
+    "index.js",
+    "lib/"
+  ],
   "scripts": {
     "test": "mocha tests/*-test.js tests/**/*-test.js",
     "test:debug": "mocha debug tests/*-test.js tests/**/*-test.js",
