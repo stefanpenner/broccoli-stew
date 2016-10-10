@@ -21,7 +21,7 @@
     "broccoli-plugin"
   ],
   "author": "Stefan Penner & Robert Jackson",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/stefanpenner/broccoli-stew/issues"
   },
