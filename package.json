@@ -40,7 +40,7 @@
     "walk-sync": "^0.3.0"
   },
   "devDependencies": {
-    "benchmark": "^2.1.1",
+    "benchmark": "^2.1.2",
     "broccoli": "^0.16.3",
     "broccoli-test-helpers": "0.0.9",
     "chai": "^3.5.0",
