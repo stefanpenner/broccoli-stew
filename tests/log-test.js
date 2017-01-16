@@ -21,24 +21,26 @@ describe('log', function() {
   describe('console output', function() {
     afterEach(function() {
       console.log.restore();
+      process.stdout.write.restore();
       return cleanupBuilders();
     });
 
     beforeEach(function() {
       sinon.spy(console, 'log');
+      sinon.spy(process.stdout, 'write');
     });
 
     it('should print out the array of files in the tree', function() {
       return log(_find('node_modules/mocha')).then(function(results) {
         var files = results.files;
 
-        expect(console.log.calledWith([
+        expect(process.stdout.write.calledWith(JSON.stringify([
           'node_modules/',
           'node_modules/mocha/',
           'node_modules/mocha/mocha.css',
           'node_modules/mocha/mocha.js',
           'node_modules/mocha/package.json'
-        ])).to.be.ok;
+        ], null, 2)));
 
         expect(files).to.eql([
           'node_modules/',
@@ -56,7 +58,7 @@ describe('log', function() {
       }).then(function(results) {
         var files = results.files;
 
-        expect(console.log.calledTwice).to.be.ok;
+        expect(console.log.calledOnce).to.be.ok;
         expect(console.log.withArgs('test')).to.be.ok;
         expect(console.log.withArgs([
           'node_modules/mocha/mocha.css',
@@ -104,7 +106,6 @@ describe('log', function() {
       }).then(function(results) {
         var files = results.files;
 
-        expect(console.log.calledTwice).to.be.ok;
         expect(console.log.withArgs('test'));
         expect(console.log.withArgs('\n└── node_modules/\n'+
         '   └── node_modules/mocha/\n'+
