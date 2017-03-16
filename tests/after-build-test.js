@@ -1,36 +1,71 @@
-var _afterBuild = require('../lib/after-build');
-var path = require('path');
-var chai = require('chai');
-var sinon = require('sinon');
-var expect = chai.expect;
-var helpers = require('broccoli-test-helpers');
-var makeTestHelper = helpers.makeTestHelper;
-var cleanupBuilders = helpers.cleanupBuilders;
+'use strict';
 
+const Noop = require('../lib/utils/noop');
+const chai = require('chai');
+const expect = chai.expect;
+const helper  = require('broccoli-test-helper');
+const createBuilder = helper.createBuilder;
+const createTempDir = helper.createTempDir;
 
-describe('afterBuild', function() {
-  var emptyFixturePath = path.join(__dirname, 'fixtures', 'empty'),
-      spyFunc;
+describe('noop', function() {
+  let input;
+  let subject;
+  let output;
+  let count = 0;
 
-  afterEach(function() {
-    return cleanupBuilders();
+  beforeEach(() => {
+    return createTempDir().then(_input => {
+      input = _input;
+      subject = new Noop(input.path(), {
+        build() {
+          count++;
+        }
+      });
+      output = createBuilder(subject);
+    });
   });
 
-  var afterBuild = makeTestHelper({
-    subject: _afterBuild,
-    fixturePath: emptyFixturePath
-  });
+  it('it called before the inputTree builds', function() {
+    input.write({
+      'index.js': `export { A } from './lib/a';`,
+      'lib': {
+        'a.js': `export class A {};`,
+        'b.js': `export class B {};`,
+        'c.js': `export class C {};`
+      }
+    });
 
-  beforeEach(function() {
-    spyFunc = sinon.spy();
-  });
+    expect(count).to.eql(0);
+    return output.build().then(() => {
+      expect(count).to.eql(1);
+      expect(output.changes()).to.deep.eql({
+        'index.js': 'create',
+        'lib/': 'mkdir',
+        'lib/a.js': 'create',
+        'lib/b.js': 'create',
+        'lib/c.js': 'create'
+      });
+      expect(output.read()).to.deep.equal({
+        'index.js': `export { A } from './lib/a';`,
+        'lib': {
+          'a.js': `export class A {};`,
+          'b.js': `export class B {};`,
+          'c.js': `export class C {};`
+        }
+      });
 
-  it('it called after the inputTree builds', function() {
-    expect(spyFunc.callCount).to.equal(0);
-
-    return afterBuild(emptyFixturePath, spyFunc).then(function(results) {
-      expect(spyFunc.callCount).to.equal(1);
-      expect(spyFunc.calledWith(sinon.match.string)).to.be.true;
+      return output.build().then(() => {
+        expect(count).to.eql(2);
+        expect(output.changes()).to.deep.eql({});
+        expect(output.read()).to.deep.equal({
+          'index.js': `export { A } from './lib/a';`,
+          'lib': {
+            'a.js': `export class A {};`,
+            'b.js': `export class B {};`,
+            'c.js': `export class C {};`
+          }
+        });
+      });
     });
   });
 });
