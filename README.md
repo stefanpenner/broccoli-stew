@@ -14,9 +14,7 @@ Currently the following methods are available:
 - [`log`](https://github.com/stefanpenner/broccoli-stew/blob/master/lib/log.js#L27) - Logs out files in the passed tree.
 - [`debug`](https://github.com/stefanpenner/broccoli-stew/blob/master/lib/debug.js#L12) - Writes the passed tree to disk at the root of the project.
 - [`rm`](https://github.com/stefanpenner/broccoli-stew/blob/master/lib/rm.js#L40) - Remove files from a tree.
-- [`beforeBuild`](https://github.com/stefanpenner/broccoli-stew/blob/master/lib/before-build.js) - Calls a callback function before the tree is read.
 - [`afterBuild`](https://github.com/stefanpenner/broccoli-stew/blob/master/lib/after-build.js) - Calls a callback function after the tree is read.
-- [`wrapBuild`](https://github.com/stefanpenner/broccoli-stew/blob/master/lib/wrap-build.js) - Calls callback functions before and after the tree is read.
 - [`npm.main`](https://github.com/stefanpenner/broccoli-stew/blob/master/lib/npm.js#L17) - Create a tree with Node module's main entry
 
 
