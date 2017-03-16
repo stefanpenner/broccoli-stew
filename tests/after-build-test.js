@@ -3,7 +3,9 @@
 const Noop = require('../lib/utils/noop');
 const chai = require('chai');
 const expect = chai.expect;
-const { createBuilder,  createTempDir } = require('broccoli-test-helper');
+const helper  = require('broccoli-test-helper');
+const createBuilder = helper.createBuilder;
+const createTempDir = helper.createTempDir;
 
 describe('noop', function() {
   let input;
