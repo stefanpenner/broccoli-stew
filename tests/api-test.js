@@ -1,5 +1,7 @@
-var stew = require('../');
-var expect = require('chai').expect;
+'use strict';
+
+const stew = require('../');
+const expect = require('chai').expect;
 
 describe('api', function() {
   it('has expected api members', function() {

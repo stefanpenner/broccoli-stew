@@ -1,15 +1,17 @@
-var _map = require('../lib/map');
-var _find = require('../lib/find');
-var path = require('path');
-var chai = require('chai');
-var expect = chai.expect;
-var fs = require('fs');
-var helpers = require('broccoli-test-helpers');
-var makeTestHelper = helpers.makeTestHelper;
-var cleanupBuilders = helpers.cleanupBuilders;
+'use strict';
+
+const _map = require('../lib/map');
+const _find = require('../lib/find');
+const path = require('path');
+const chai = require('chai');
+const expect = chai.expect;
+const fs = require('fs');
+const helpers = require('broccoli-test-helpers');
+const makeTestHelper = helpers.makeTestHelper;
+const cleanupBuilders = helpers.cleanupBuilders;
 
 describe('map', function() {
-  var fixturePath = path.join(__dirname, 'fixtures');
+  let fixturePath = path.join(__dirname, 'fixtures');
 
   afterEach(function() {
     return cleanupBuilders();
@@ -19,7 +21,7 @@ describe('map', function() {
     return fs.readFileSync(path.join(fixturePath, p)).toString();
   }
 
-  var map = makeTestHelper({
+  let map = makeTestHelper({
     subject: _map,
     fixturePath: fixturePath,
     filter: function(paths, inputTree) {
@@ -35,7 +37,7 @@ describe('map', function() {
       return map(_find('node_modules/**/*'), function(content) {
         return content;
       }).then(function(results) {
-        var files = results.files;
+        let files = results.files;
 
         expect(files['node_modules/foo/foo.css'       ]).to.eql(fixtureContent('node_modules/foo/foo.css'));
         expect(files['node_modules/mocha/mocha.css'   ]).to.eql(fixtureContent('node_modules/mocha/mocha.css'));
@@ -48,7 +50,7 @@ describe('map', function() {
       return map(_find('node_modules/**/*'), function(content) {
         return 'hi\n' + content;
       }).then(function(results) {
-        var files = results.files;
+        let files = results.files;
 
         expect(files['node_modules/foo/foo.css'       ]).to.eql('hi\n' + fixtureContent('node_modules/foo/foo.css'));
         expect(files['node_modules/mocha/mocha.css'   ]).to.eql('hi\n' + fixtureContent('node_modules/mocha/mocha.css'));
@@ -60,13 +62,13 @@ describe('map', function() {
 
   describe('tree, filter and mapper', function() {
     it('leaves all files but the match alone', function() {
-      var count = 0;
+      let count = 0;
       return map(_find('node_modules/**/*'), '**/*.js', function(content, relativePath) {
         expect(relativePath).to.eql('node_modules/mocha/mocha.js');
         count++;
         return 'hi\n' + content;
       }).then(function(results) {
-        var files = results.files;
+        let files = results.files;
 
         expect(count).to.eql(1);
         expect(files['node_modules/foo/foo.css'       ]).to.eql(fixtureContent('node_modules/foo/foo.css'));
@@ -80,7 +82,7 @@ describe('map', function() {
       return map(_find('node_modules/**/*'), function(content) {
         return 'hi\n' + content;
       }).then(function(results) {
-        var files = results.files;
+        let files = results.files;
 
         expect(files['node_modules/foo/foo.css'       ]).to.eql('hi\n' + fixtureContent('/node_modules/foo/foo.css'));
         expect(files['node_modules/mocha/mocha.css'   ]).to.eql('hi\n' + fixtureContent('/node_modules/mocha/mocha.css'));

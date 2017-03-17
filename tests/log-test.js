@@ -1,19 +1,21 @@
-var broccoli = require('broccoli');
-var _find = require('../lib/find');
-var _log = require('../lib/log');
-var path = require('path');
-var expect = require('chai').expect;
-var sinon = require('sinon');
-var helpers = require('broccoli-test-helpers');
-var makeTestHelper = helpers.makeTestHelper;
-var cleanupBuilders = helpers.cleanupBuilders;
-var chalk = require('chalk');
-var label = chalk.bold.cyan;
+'use strict';
+
+const broccoli = require('broccoli');
+const _find = require('../lib/find');
+const _log = require('../lib/log');
+const path = require('path');
+const expect = require('chai').expect;
+const sinon = require('sinon');
+const helpers = require('broccoli-test-helpers');
+const makeTestHelper = helpers.makeTestHelper;
+const cleanupBuilders = helpers.cleanupBuilders;
+const chalk = require('chalk');
+const label = chalk.bold.cyan;
 
 describe('log', function() {
-  var fixturePath = path.join(__dirname, 'fixtures');
+  let fixturePath = path.join(__dirname, 'fixtures');
 
-  var log = makeTestHelper({
+  let log = makeTestHelper({
     subject: _log,
     fixturePath: fixturePath
   });
@@ -32,7 +34,7 @@ describe('log', function() {
 
     it('should print out the array of files in the tree', function() {
       return log(_find('node_modules/mocha')).then(function(results) {
-        var files = results.files;
+        let files = results.files;
 
         expect(process.stdout.write.calledWith(JSON.stringify([
           'node_modules/',
@@ -56,7 +58,7 @@ describe('log', function() {
       return log(_find('node_modules/mocha'), {
         label: 'test'
       }).then(function(results) {
-        var files = results.files;
+        let files = results.files;
 
         expect(console.log.calledOnce).to.be.ok;
         expect(console.log.withArgs('test')).to.be.ok;
@@ -80,7 +82,7 @@ describe('log', function() {
       return log(_find('node_modules/mocha'), {
         output: 'tree'
       }).then(function(results) {
-        var files = results.files;
+        let files = results.files;
 
         expect(console.log.calledOnce).to.be.ok;
         expect(console.log.withArgs('\n└── node_modules/\n'+
@@ -104,7 +106,7 @@ describe('log', function() {
         output: 'tree',
         label: 'test'
       }).then(function(results) {
-        var files = results.files;
+        let files = results.files;
 
         expect(console.log.withArgs('test'));
         expect(console.log.withArgs('\n└── node_modules/\n'+
@@ -125,7 +127,7 @@ describe('log', function() {
   });
 
   describe('debug output', function() {
-    var called = [];
+    let called = [];
 
     function mockDebugger() {
       return function() {
@@ -165,7 +167,7 @@ describe('log', function() {
         debugOnly: true,
         debugger: mockDebugger
       }).then(function(results) {
-        var files = results.files;
+        let files = results.files;
         expect(called.length).to.eql(0);
       });
     });
@@ -176,7 +178,7 @@ describe('log', function() {
         debugOnly: true,
         debugger: mockDebugger
       }).then(function(results) {
-        var files = results.files;
+        let files = results.files;
 
         expect(called[0]).to.eql([
           'node_modules/',
@@ -203,7 +205,7 @@ describe('log', function() {
         debugOnly: true,
         debugger: mockDebugger
       }).then(function(results) {
-        var files = results.files;
+        let files = results.files;
 
         expect(called[0]).to.eql([
           'node_modules/',
@@ -230,7 +232,7 @@ describe('log', function() {
         label: 'test',
         debugger: mockDebugger
       }).then(function(results) {
-        var files = results.files;
+        let files = results.files;
 
         expect(called[0]).to.eql('\n└── node_modules/\n'+
         '   └── node_modules/mocha/\n'+
@@ -257,6 +259,5 @@ describe('log', function() {
         expect(called).to.eql([]);
       });
     });
-
   });
 });
