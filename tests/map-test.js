@@ -9,6 +9,7 @@ const fs = require('fs');
 const helpers = require('broccoli-test-helpers');
 const makeTestHelper = helpers.makeTestHelper;
 const cleanupBuilders = helpers.cleanupBuilders;
+const co = require('co');
 
 describe('map', function() {
   let fixturePath = path.join(__dirname, 'fixtures');
@@ -33,62 +34,52 @@ describe('map', function() {
   });
 
   describe('tree and mapper', function() {
-    it('identity', function() {
-      return map(_find('node_modules/**/*'), function(content) {
-        return content;
-      }).then(function(results) {
-        let files = results.files;
+    it('identity', co.wrap(function* () {
+      let results = yield map(_find('node_modules/**/*'), content => content);
+      let files = results.files;
 
-        expect(files['node_modules/foo/foo.css'       ]).to.eql(fixtureContent('node_modules/foo/foo.css'));
-        expect(files['node_modules/mocha/mocha.css'   ]).to.eql(fixtureContent('node_modules/mocha/mocha.css'));
-        expect(files['node_modules/mocha/mocha.js'    ]).to.eql(fixtureContent('node_modules/mocha/mocha.js'));
-        expect(files['node_modules/mocha/package.json']).to.eql(fixtureContent('node_modules/mocha/package.json'));
-      });
-    });
+      expect(files['node_modules/foo/foo.css'       ]).to.eql(fixtureContent('node_modules/foo/foo.css'));
+      expect(files['node_modules/mocha/mocha.css'   ]).to.eql(fixtureContent('node_modules/mocha/mocha.css'));
+      expect(files['node_modules/mocha/mocha.js'    ]).to.eql(fixtureContent('node_modules/mocha/mocha.js'));
+      expect(files['node_modules/mocha/package.json']).to.eql(fixtureContent('node_modules/mocha/package.json'));
+    }));
 
-    it('prepend', function() {
-      return map(_find('node_modules/**/*'), function(content) {
-        return 'hi\n' + content;
-      }).then(function(results) {
-        let files = results.files;
+    it('prepend', co.wrap(function* () {
+      let results = yield map(_find('node_modules/**/*'), content => 'hi\n' + content);
+      let files = results.files;
 
-        expect(files['node_modules/foo/foo.css'       ]).to.eql('hi\n' + fixtureContent('node_modules/foo/foo.css'));
-        expect(files['node_modules/mocha/mocha.css'   ]).to.eql('hi\n' + fixtureContent('node_modules/mocha/mocha.css'));
-        expect(files['node_modules/mocha/mocha.js'    ]).to.eql('hi\n' + fixtureContent('node_modules/mocha/mocha.js'));
-        expect(files['node_modules/mocha/package.json']).to.eql('hi\n' + fixtureContent('node_modules/mocha/package.json'));
-      });
-    });
+      expect(files['node_modules/foo/foo.css'       ]).to.eql('hi\n' + fixtureContent('node_modules/foo/foo.css'));
+      expect(files['node_modules/mocha/mocha.css'   ]).to.eql('hi\n' + fixtureContent('node_modules/mocha/mocha.css'));
+      expect(files['node_modules/mocha/mocha.js'    ]).to.eql('hi\n' + fixtureContent('node_modules/mocha/mocha.js'));
+      expect(files['node_modules/mocha/package.json']).to.eql('hi\n' + fixtureContent('node_modules/mocha/package.json'));
+    }));
   });
 
   describe('tree, filter and mapper', function() {
-    it('leaves all files but the match alone', function() {
+    it('leaves all files but the match alone', co.wrap(function* () {
       let count = 0;
-      return map(_find('node_modules/**/*'), '**/*.js', function(content, relativePath) {
+      let results = yield map(_find('node_modules/**/*'), '**/*.js', (content, relativePath) => {
         expect(relativePath).to.eql('node_modules/mocha/mocha.js');
         count++;
         return 'hi\n' + content;
-      }).then(function(results) {
-        let files = results.files;
-
-        expect(count).to.eql(1);
-        expect(files['node_modules/foo/foo.css'       ]).to.eql(fixtureContent('node_modules/foo/foo.css'));
-        expect(files['node_modules/mocha/mocha.css'   ]).to.eql(fixtureContent('node_modules/mocha/mocha.css'));
-        expect(files['node_modules/mocha/mocha.js'    ]).to.eql('hi\n' + fixtureContent('node_modules/mocha/mocha.js'));
-        expect(files['node_modules/mocha/package.json']).to.eql(fixtureContent('node_modules/mocha/package.json'));
       });
-    });
+      let files = results.files;
 
-    it('prepend', function() {
-      return map(_find('node_modules/**/*'), function(content) {
-        return 'hi\n' + content;
-      }).then(function(results) {
-        let files = results.files;
+      expect(count).to.eql(1);
+      expect(files['node_modules/foo/foo.css'       ]).to.eql(fixtureContent('node_modules/foo/foo.css'));
+      expect(files['node_modules/mocha/mocha.css'   ]).to.eql(fixtureContent('node_modules/mocha/mocha.css'));
+      expect(files['node_modules/mocha/mocha.js'    ]).to.eql('hi\n' + fixtureContent('node_modules/mocha/mocha.js'));
+      expect(files['node_modules/mocha/package.json']).to.eql(fixtureContent('node_modules/mocha/package.json'));
+    }));
 
-        expect(files['node_modules/foo/foo.css'       ]).to.eql('hi\n' + fixtureContent('/node_modules/foo/foo.css'));
-        expect(files['node_modules/mocha/mocha.css'   ]).to.eql('hi\n' + fixtureContent('/node_modules/mocha/mocha.css'));
-        expect(files['node_modules/mocha/mocha.js'    ]).to.eql('hi\n' + fixtureContent('/node_modules/mocha/mocha.js'));
-        expect(files['node_modules/mocha/package.json']).to.eql('hi\n' + fixtureContent('/node_modules/mocha/package.json'));
-      });
-    });
+    it('prepend', co.wrap(function* () {
+      let results = yield map(_find('node_modules/**/*'), content => 'hi\n' + content);
+      let files = results.files;
+
+      expect(files['node_modules/foo/foo.css'       ]).to.eql('hi\n' + fixtureContent('/node_modules/foo/foo.css'));
+      expect(files['node_modules/mocha/mocha.css'   ]).to.eql('hi\n' + fixtureContent('/node_modules/mocha/mocha.css'));
+      expect(files['node_modules/mocha/mocha.js'    ]).to.eql('hi\n' + fixtureContent('/node_modules/mocha/mocha.js'));
+      expect(files['node_modules/mocha/package.json']).to.eql('hi\n' + fixtureContent('/node_modules/mocha/package.json'));
+    }));
   });
 });

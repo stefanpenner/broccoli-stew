@@ -11,6 +11,7 @@ const makeTestHelper = helpers.makeTestHelper;
 const cleanupBuilders = helpers.cleanupBuilders;
 const chalk = require('chalk');
 const label = chalk.bold.cyan;
+const co = require('co');
 
 describe('log', function() {
   let fixturePath = path.join(__dirname, 'fixtures');
@@ -32,98 +33,92 @@ describe('log', function() {
       sinon.spy(process.stdout, 'write');
     });
 
-    it('should print out the array of files in the tree', function() {
-      return log(_find('node_modules/mocha')).then(function(results) {
-        let files = results.files;
+    it('should print out the array of files in the tree', co.wrap(function* () {
+      let results = yield log(_find('node_modules/mocha'));
+      let files = results.files;
 
-        expect(process.stdout.write.calledWith(JSON.stringify([
-          'node_modules/',
-          'node_modules/mocha/',
-          'node_modules/mocha/mocha.css',
-          'node_modules/mocha/mocha.js',
-          'node_modules/mocha/package.json'
-        ], null, 2)));
+      expect(process.stdout.write.calledWith(JSON.stringify([
+        'node_modules/',
+        'node_modules/mocha/',
+        'node_modules/mocha/mocha.css',
+        'node_modules/mocha/mocha.js',
+        'node_modules/mocha/package.json'
+      ], null, 2)));
 
-        expect(files).to.eql([
-          'node_modules/',
-          'node_modules/mocha/',
-          'node_modules/mocha/mocha.css',
-          'node_modules/mocha/mocha.js',
-          'node_modules/mocha/package.json'
-        ]);
-      });
-    });
+      expect(files).to.eql([
+        'node_modules/',
+        'node_modules/mocha/',
+        'node_modules/mocha/mocha.css',
+        'node_modules/mocha/mocha.js',
+        'node_modules/mocha/package.json'
+      ]);
+    }));
 
-    it('should print out the array of files with a label', function() {
-      return log(_find('node_modules/mocha'), {
+    it('should print out the array of files with a label', co.wrap(function* () {
+      let results = yield log(_find('node_modules/mocha'), {
         label: 'test'
-      }).then(function(results) {
-        let files = results.files;
-
-        expect(console.log.calledOnce).to.be.ok;
-        expect(console.log.withArgs('test')).to.be.ok;
-        expect(console.log.withArgs([
-          'node_modules/mocha/mocha.css',
-          'node_modules/mocha/mocha.js',
-          'node_modules/mocha/package.json'
-        ])).to.be.ok;
-
-        expect(files).to.eql([
-          'node_modules/',
-          'node_modules/mocha/',
-          'node_modules/mocha/mocha.css',
-          'node_modules/mocha/mocha.js',
-          'node_modules/mocha/package.json'
-        ]);
       });
-    });
+      let files = results.files;
 
-    it('should print out a tree of files', function() {
-      return log(_find('node_modules/mocha'), {
-        output: 'tree'
-      }).then(function(results) {
-        let files = results.files;
+      expect(console.log.calledOnce).to.be.ok;
+      expect(console.log.withArgs('test')).to.be.ok;
+      expect(console.log.withArgs([
+        'node_modules/mocha/mocha.css',
+        'node_modules/mocha/mocha.js',
+        'node_modules/mocha/package.json'
+      ])).to.be.ok;
 
-        expect(console.log.calledOnce).to.be.ok;
-        expect(console.log.withArgs('\n└── node_modules/\n'+
+      expect(files).to.eql([
+        'node_modules/',
+        'node_modules/mocha/',
+        'node_modules/mocha/mocha.css',
+        'node_modules/mocha/mocha.js',
+        'node_modules/mocha/package.json'
+      ]);
+    }));
+
+    it('should print out a tree of files', co.wrap(function* () {
+      let results = yield log(_find('node_modules/mocha'), { output: 'tree' });
+      let files = results.files;
+
+      expect(console.log.calledOnce).to.be.ok;
+      expect(console.log.withArgs('\n└── node_modules/\n'+
         '   └── node_modules/mocha/\n'+
         '      ├── node_modules/mocha/mocha.css\n'+
         '      ├── node_modules/mocha/mocha.js\n'+
         '      └── node_modules/mocha/package.json')).to.be.ok;
 
-        expect(files).to.eql([
-          'node_modules/',
-          'node_modules/mocha/',
-          'node_modules/mocha/mocha.css',
-          'node_modules/mocha/mocha.js',
-          'node_modules/mocha/package.json'
-        ]);
-      });
-    });
+      expect(files).to.eql([
+        'node_modules/',
+        'node_modules/mocha/',
+        'node_modules/mocha/mocha.css',
+        'node_modules/mocha/mocha.js',
+        'node_modules/mocha/package.json'
+      ]);
+    }));
 
-    it('should print out a tree of files with a label', function() {
-      return log(_find('node_modules/mocha'), {
+    it('should print out a tree of files with a label', co.wrap(function* () {
+      let results = yield log(_find('node_modules/mocha'), {
         output: 'tree',
         label: 'test'
-      }).then(function(results) {
-        let files = results.files;
+      });
+      let files = results.files;
 
-        expect(console.log.withArgs('test'));
-        expect(console.log.withArgs('\n└── node_modules/\n'+
+      expect(console.log.withArgs('test'));
+      expect(console.log.withArgs('\n└── node_modules/\n'+
         '   └── node_modules/mocha/\n'+
         '      ├── node_modules/mocha/mocha.css\n'+
         '      ├── node_modules/mocha/mocha.js\n'+
         '      └── node_modules/mocha/package.json')).to.be.ok;
 
-        expect(files).to.eql([
-          'node_modules/',
-          'node_modules/mocha/',
-          'node_modules/mocha/mocha.css',
-          'node_modules/mocha/mocha.js',
-          'node_modules/mocha/package.json'
-        ]);
-      });
-    });
+      expect(files).to.eql([
+        'node_modules/',
+        'node_modules/mocha/',
+        'node_modules/mocha/mocha.css',
+        'node_modules/mocha/mocha.js',
+        'node_modules/mocha/package.json'
+      ]);
+    }));
   });
 
   describe('debug output', function() {
@@ -160,104 +155,104 @@ describe('log', function() {
       expect(runMe).to.not.throw(TypeError);
     });
 
-    it('shouldn\'t print if the label doesn\'t match DEBUG env', function() {
+    it('shouldn\'t print if the label doesn\'t match DEBUG env', co.wrap(function* () {
       process.env.DEBUG = 'fhqwhgads';
-      return log(_find('node_modules/mocha'), {
+
+      let results = yield log(_find('node_modules/mocha'), {
         label: 'test',
         debugOnly: true,
         debugger: mockDebugger
-      }).then(function(results) {
-        let files = results.files;
-        expect(called.length).to.eql(0);
       });
-    });
 
-    it('should print out the array of files in the tree', function() {
-      return log(_find('node_modules/mocha'), {
+      let files = results.files;
+
+      expect(called.length).to.eql(0);
+    }));
+
+    it('should print out the array of files in the tree', co.wrap(function* () {
+      let results = yield log(_find('node_modules/mocha'), {
         label: 'test',
         debugOnly: true,
         debugger: mockDebugger
-      }).then(function(results) {
-        let files = results.files;
-
-        expect(called[0]).to.eql([
-          'node_modules/',
-          'node_modules/mocha/',
-          'node_modules/mocha/mocha.css',
-          'node_modules/mocha/mocha.js',
-          'node_modules/mocha/package.json'
-        ]);
-
-        expect(files).to.eql([
-          'node_modules/',
-          'node_modules/mocha/',
-          'node_modules/mocha/mocha.css',
-          'node_modules/mocha/mocha.js',
-          'node_modules/mocha/package.json'
-        ]);
       });
-    });
+      let files = results.files;
 
-    it('should print out the array of files in the tree for partial pattern match', function() {
+      expect(called[0]).to.eql([
+        'node_modules/',
+        'node_modules/mocha/',
+        'node_modules/mocha/mocha.css',
+        'node_modules/mocha/mocha.js',
+        'node_modules/mocha/package.json'
+      ]);
+
+      expect(files).to.eql([
+        'node_modules/',
+        'node_modules/mocha/',
+        'node_modules/mocha/mocha.css',
+        'node_modules/mocha/mocha.js',
+        'node_modules/mocha/package.json'
+      ]);
+    }));
+
+    it('should print out the array of files in the tree for partial pattern match', co.wrap(function* () {
       process.env.DEBUG = '*test';
-      return log(_find('node_modules/mocha'), {
+
+      let results = yield log(_find('node_modules/mocha'), {
         label: 'test',
         debugOnly: true,
         debugger: mockDebugger
-      }).then(function(results) {
-        let files = results.files;
-
-        expect(called[0]).to.eql([
-          'node_modules/',
-          'node_modules/mocha/',
-          'node_modules/mocha/mocha.css',
-          'node_modules/mocha/mocha.js',
-          'node_modules/mocha/package.json'
-        ]);
-
-        expect(files).to.eql([
-          'node_modules/',
-          'node_modules/mocha/',
-          'node_modules/mocha/mocha.css',
-          'node_modules/mocha/mocha.js',
-          'node_modules/mocha/package.json'
-        ]);
       });
-    });
 
-    it('should print out the tree of files to sdtout (as tree structure)', function() {
-      return log(_find('node_modules/mocha'), {
+      let files = results.files;
+
+      expect(called[0]).to.eql([
+        'node_modules/',
+        'node_modules/mocha/',
+        'node_modules/mocha/mocha.css',
+        'node_modules/mocha/mocha.js',
+        'node_modules/mocha/package.json'
+      ]);
+
+      expect(files).to.eql([
+        'node_modules/',
+        'node_modules/mocha/',
+        'node_modules/mocha/mocha.css',
+        'node_modules/mocha/mocha.js',
+        'node_modules/mocha/package.json'
+      ]);
+    }));
+
+    it('should print out the tree of files to sdtout (as tree structure)', co.wrap(function* () {
+      let results = yield log(_find('node_modules/mocha'), {
         output: 'tree',
         debugOnly: true,
         label: 'test',
         debugger: mockDebugger
-      }).then(function(results) {
-        let files = results.files;
+      });
+      let files = results.files;
 
-        expect(called[0]).to.eql('\n└── node_modules/\n'+
+      expect(called[0]).to.eql('\n└── node_modules/\n'+
         '   └── node_modules/mocha/\n'+
         '      ├── node_modules/mocha/mocha.css\n'+
         '      ├── node_modules/mocha/mocha.js\n'+
         '      └── node_modules/mocha/package.json');
-        expect(files).to.eql([
-          'node_modules/',
-          'node_modules/mocha/',
-          'node_modules/mocha/mocha.css',
-          'node_modules/mocha/mocha.js',
-          'node_modules/mocha/package.json'
-        ]);
-      });
-    });
+      expect(files).to.eql([
+        'node_modules/',
+        'node_modules/mocha/',
+        'node_modules/mocha/mocha.css',
+        'node_modules/mocha/mocha.js',
+        'node_modules/mocha/package.json'
+      ]);
+    }));
 
-    it('should be a pass through if not in process.env.DEBUG', function() {
+    it('should be a pass through if not in process.env.DEBUG', co.wrap(function* () {
       process.env.DEBUG = false;
-      return log(_find('node_modules/mocha'), {
+      let results = yield log(_find('node_modules/mocha'), {
         label: 'baz',
         debugOnly: true,
         debugger: mockDebugger
-      }).then(function() {
-        expect(called).to.eql([]);
       });
-    });
+      expect(called).to.eql([]);
+    }));
   });
 });
