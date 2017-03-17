@@ -14,17 +14,15 @@ describe('noop', function() {
   let output;
   let count = 0;
 
-  beforeEach(() => {
-    return createTempDir().then(_input => {
-      input = _input;
-      subject = new Noop(input.path(), {
-        build() {
-          count++;
-        }
-      });
-      output = createBuilder(subject);
+  beforeEach(co.wrap(function* () {
+    input = yield createTempDir();
+    subject = new Noop(input.path(), {
+      build() {
+        count++;
+      }
     });
-  });
+    output = createBuilder(subject);
+  }));
 
   it('it called before the inputTree builds', co.wrap(function* () {
     input.write({
