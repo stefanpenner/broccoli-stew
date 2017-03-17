@@ -1,5 +1,7 @@
-var assert = require('assert');
-var env = require('../lib/env');
+'use strict';
+
+const expect = require('chai').expect;
+const env = require('../lib/env');
 
 describe('env', function() {
   ['BROCCOLI_ENV', 'EMBER_ENV'].forEach(function(ENV_VAR) {
@@ -9,23 +11,19 @@ describe('env', function() {
 
     describe('no env', function() {
       it('invokes the callback', function() {
-        var wasInvoked = false;
+        let wasInvoked = false;
 
-        env('development', function() {
-          wasInvoked = true;
-        });
-        assert(wasInvoked);
+        env('development', () => wasInvoked = true);
+        expect(wasInvoked).to.eql(true);
       });
     });
 
     describe('development', function() {
       it('invokes the calback', function() {
-        var wasInvoked = false;
+        let wasInvoked = false;
 
-        env('development', function() {
-          wasInvoked = true;
-        });
-        assert(wasInvoked);
+        env('development', () => wasInvoked = true);
+        expect(wasInvoked).to.eql(true);
       });
     });
 
@@ -35,54 +33,43 @@ describe('env', function() {
       });
 
       it('does NOT invoke the development callback', function() {
-        var wasInvoked = false;
+        let wasInvoked = false;
 
-        env('development', function() {
-          wasInvoked = true;
-        });
-
-        assert(!wasInvoked);
+        env('development', () => wasInvoked = true);
+        expect(wasInvoked).to.eql(false);
       });
 
       it('does invoke the production callback', function() {
-        var wasInvoked = false;
+        let wasInvoked = false;
 
-        env('production', function() {
-          wasInvoked = true;
-        });
+        env('production', () => wasInvoked = true);
 
-        assert(wasInvoked);
+        expect(wasInvoked).to.eql(true);
       });
 
       it('does NOT invoke the !production callback', function() {
-        var wasInvoked = false;
+        let wasInvoked = false;
 
-        env('!production', function() {
-          wasInvoked = true;
-        });
+        env('!production', () => wasInvoked = true);
 
-        assert(!wasInvoked);
+        expect(wasInvoked).to.eql(false);
       });
 
       it('does invoke the development,production callback', function() {
-        var wasInvoked = false;
+        let wasInvoked = false;
 
-        env('development', 'production', function() {
-          wasInvoked = true;
-        });
+        env('development', 'production', () => wasInvoked = true);
 
-        assert(wasInvoked);
+        expect(wasInvoked).to.eql(true);
       });
 
       it('does NOT invoke the development,!production callback', function() {
-        var wasInvoked = false;
+        let wasInvoked = false;
 
-        env('development', '!production', function() {
-          wasInvoked = true;
-        });
+        env('development', '!production', () => wasInvoked = true);
 
-        assert(!wasInvoked);
+        expect(wasInvoked).to.eql(false);
       });
-    })
+    });
   });
 });

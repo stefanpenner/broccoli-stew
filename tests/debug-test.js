@@ -1,31 +1,33 @@
-var _find = require('../lib/find');
-var _debug = require('../lib/debug');
-var expect = require('chai').expect;
-var fs = require('fs-extra');
-var path = require('path');
-var helpers = require('broccoli-test-helpers');
-var makeTestHelper = helpers.makeTestHelper;
-var cleanupBuilders = helpers.cleanupBuilders;
-var walkSync = require('walk-sync');
+'use strict';
+
+const _find = require('../lib/find');
+const _debug = require('../lib/debug');
+const expect = require('chai').expect;
+const fs = require('fs-extra');
+const path = require('path');
+const helpers = require('broccoli-test-helpers');
+const makeTestHelper = helpers.makeTestHelper;
+const cleanupBuilders = helpers.cleanupBuilders;
+const walkSync = require('walk-sync');
 
 describe('debug', function() {
 
-  var fixturePath = path.join(__dirname, 'fixtures');
+  const fixturePath = path.join(__dirname, 'fixtures');
 
-  afterEach(function() {
-    return cleanupBuilders(function() {
+  afterEach(() => {
+    return cleanupBuilders(() => {
       fs.removeSync(path.join(__dirname, 'fixtures/DEBUG-debug'));
     });
   });
 
-  var debug = makeTestHelper({
+  let debug = makeTestHelper({
     subject: _debug,
     fixturePath: fixturePath
   });
 
   it('should have an array of files and directorys in the tree', function() {
-    return debug(_find('node_modules/mocha'), {name: 'debug'}).then(function(results) {
-      var files = results.files;
+    return debug(_find('node_modules/mocha'), { name: 'debug' }).then(results => {
+      let files = results.files;
 
       expect(files).to.eql([
         'node_modules/',
@@ -38,20 +40,20 @@ describe('debug', function() {
   });
 
   it('should write output to both debug folder and normal result', function() {
-    var mochaFixturePath = path.join(fixturePath, 'node_modules', 'mocha');
+    let mochaFixturePath = path.join(fixturePath, 'node_modules', 'mocha');
 
-    return debug(mochaFixturePath, {name: 'debug'}).then(function(results) {
-      var files = walkSync(mochaFixturePath);
-      var outputDir = results.directory;
+    return debug(mochaFixturePath, {name: 'debug'}).then(results => {
+      let files = walkSync(mochaFixturePath);
+      let outputDir = results.directory;
 
-      files.forEach(function(file) {
+      files.forEach(file => {
         if (file.slice(-1) === '/') { return; }
 
-        var debugPath = path.join(fixturePath, 'DEBUG-debug', file);
-        var treeOutputPath = path.join(outputDir, file);
-        var sourcePath = path.join(mochaFixturePath, file);
+        let debugPath = path.join(fixturePath, 'DEBUG-debug', file);
+        let treeOutputPath = path.join(outputDir, file);
+        let sourcePath = path.join(mochaFixturePath, file);
 
-        var expected = fs.readFileSync(sourcePath, { encoding: 'utf8' });
+        let expected = fs.readFileSync(sourcePath, { encoding: 'utf8' });
 
         expect(fs.readFileSync(debugPath, { encoding: 'utf8' })).to.equal(expected);
         expect(fs.readFileSync(treeOutputPath, { encoding: 'utf8' })).to.equal(expected);
@@ -60,25 +62,25 @@ describe('debug', function() {
   });
 
   it('suports string second argument as label', function() {
-    var mochaFixturePath = path.join(fixturePath, 'node_modules', 'mocha');
+    let mochaFixturePath = path.join(fixturePath, 'node_modules', 'mocha');
 
-    return debug(mochaFixturePath, 'debug2').then(function(results) {
-      var outputDir = results.directory;
+    return debug(mochaFixturePath, 'debug2').then(results => {
+      let outputDir = results.directory;
 
-      var debugPath = path.join(fixturePath, 'DEBUG-debug2');
+      let debugPath = path.join(fixturePath, 'DEBUG-debug2');
       expect(fs.existsSync(debugPath)).to.be.true;
     });
   });
 
   it('should write files to disk in correct folder', function() {
-    return debug(_find('node_modules/mocha'), {name: 'debug'}).then(function(results) {
-      var files = results.files;
+    return debug(_find('node_modules/mocha'), {name: 'debug'}).then(results => {
+      let files = results.files;
 
-      var base = 'tests/fixtures/';
-      var debugDir = path.join(process.cwd(), base + 'DEBUG-debug');
-      var fixture = path.join(process.cwd(), base + 'node_modules/mocha/mocha.js');
+      let base = 'tests/fixtures/';
+      let debugDir = path.join(process.cwd(), base + 'DEBUG-debug');
+      let fixture = path.join(process.cwd(), base + 'node_modules/mocha/mocha.js');
 
-      files.forEach(function(file) {
+      files.forEach(file => {
         expect(fs.existsSync(path.join(debugDir, file))).to.be.ok;
       });
 
@@ -89,14 +91,14 @@ describe('debug', function() {
   });
 
   it('should write files to disk in correct folder with dir option', function() {
-    return debug(_find('node_modules/mocha'), {name: 'debug', dir: 'mydir'}).then(function(results) {
-      var files = results.files;
+    return debug(_find('node_modules/mocha'), { name: 'debug', dir: 'mydir' }).then(results => {
+      let files = results.files;
 
-      var base = 'tests/fixtures/';
-      var debugDir = path.join(process.cwd(), base + 'mydir/debug');
-      var fixture = path.join(process.cwd(), base + 'node_modules/mocha/mocha.js');
+      let base = 'tests/fixtures/';
+      let debugDir = path.join(process.cwd(), base + 'mydir/debug');
+      let fixture = path.join(process.cwd(), base + 'node_modules/mocha/mocha.js');
 
-      files.forEach(function(file) {
+      files.forEach(file => {
         expect(fs.existsSync(path.join(debugDir, file))).to.be.ok;
       });
 
@@ -105,5 +107,4 @@ describe('debug', function() {
       })).to.equal(fs.readFileSync(fixture, {encoding: 'utf8'}));
     });
   });
-
 });

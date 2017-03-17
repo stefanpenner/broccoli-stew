@@ -1,6 +1,6 @@
 'use strict';
 
-const Noop = require('../lib/utils/noop');
+const Noop = require('../../lib/utils/noop');
 const chai = require('chai');
 const expect = chai.expect;
 const helper  = require('broccoli-test-helper');
@@ -45,6 +45,7 @@ describe('noop', function() {
         'lib/b.js': 'create',
         'lib/c.js': 'create'
       });
+
       expect(output.read()).to.deep.equal({
         'index.js': `export { A } from './lib/a';`,
         'lib': {
