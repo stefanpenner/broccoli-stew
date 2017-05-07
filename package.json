@@ -27,6 +27,7 @@
   },
   "homepage": "https://github.com/stefanpenner/broccoli-stew",
   "dependencies": {
+    "broccoli-debug": "^0.6.1",
     "broccoli-funnel": "^1.0.1",
     "broccoli-merge-trees": "^1.0.0",
     "broccoli-persistent-filter": "^1.1.6",
@@ -38,7 +39,6 @@
     "minimatch": "^3.0.2",
     "resolve": "^1.1.6",
     "rsvp": "^3.0.16",
-    "sanitize-filename": "^1.5.3",
     "symlink-or-copy": "^1.1.8",
     "walk-sync": "^0.3.0"
   },
