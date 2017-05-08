@@ -17,7 +17,7 @@ describe('debug', function() {
 
   afterEach(() => {
     return cleanupBuilders(() => {
-      fs.removeSync(path.join(__dirname, 'fixtures/DEBUG-debug'));
+      fs.removeSync(path.join(process.cwd(), 'DEBUG'));
     });
   });
 
@@ -49,7 +49,7 @@ describe('debug', function() {
     files.forEach(file => {
       if (file.slice(-1) === '/') { return; }
 
-      let debugPath = path.join(fixturePath, 'DEBUG-debug', file);
+      let debugPath = path.join(process.cwd(), 'DEBUG', 'debug', file);
       let treeOutputPath = path.join(outputDir, file);
       let sourcePath = path.join(mochaFixturePath, file);
 
@@ -66,7 +66,7 @@ describe('debug', function() {
     let results = yield debug(mochaFixturePath, 'debug2');
     let outputDir = results.directory;
 
-    let debugPath = path.join(fixturePath, 'DEBUG-debug2');
+    let debugPath = path.join(process.cwd(), 'DEBUG', 'debug2');
     expect(fs.existsSync(debugPath)).to.be.true;
   }));
 
@@ -75,7 +75,7 @@ describe('debug', function() {
     let files = results.files;
 
     let base = 'tests/fixtures/';
-    let debugDir = path.join(process.cwd(), base + 'DEBUG-debug');
+    let debugDir = path.join(process.cwd(), 'DEBUG/debug');
     let fixture = path.join(process.cwd(), base + 'node_modules/mocha/mocha.js');
 
     files.forEach(file => {
