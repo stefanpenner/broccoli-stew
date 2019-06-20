@@ -285,7 +285,7 @@ describe('find', function() {
       let files = results.files;
 
       expect(files).to.eql([
-        root + '/node_modules/whatwg-fetch/fetch.js'
+        root + '/node_modules/whatwg-fetch/dist/fetch.umd.js'
       ]);
     }));
   });
