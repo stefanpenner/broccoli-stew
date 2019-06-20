@@ -1,6 +1,6 @@
 {
   "name": "broccoli-stew",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "description": "foundation of any healthy brocfile",
   "main": "index.js",
   "files": [
@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/stefanpenner/broccoli-stew",
   "engines": {
-    "node": "^6.* || 8.* || >= 10.*"
+    "node": "8.* || >= 10.*"
   },
   "dependencies": {
     "broccoli-debug": "^0.6.5",
