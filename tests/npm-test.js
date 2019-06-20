@@ -40,7 +40,7 @@ describe('npm', function() {
     it('whatwg-fetch', function() {
       return npmMain('whatwg-fetch').then(result => {
         expect(result.files).to.eql([
-          'fetch.js'
+          'fetch.umd.js'
         ]);
       });
     });
